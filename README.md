@@ -1,17 +1,2 @@
-# cvora
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# CVora-AI-Powered-Resume-Builder-Career-Intelligence-Platform
+An intelligent AI-powered platform that helps users build, analyze, optimize, and tailor professional resumes, perform ATS analysis, match job descriptions, and accelerate career development using advanced AI technologies.
