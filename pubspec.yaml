@@ -48,6 +48,15 @@ dependencies:
   # "Remember me" persistence on the login screen
   shared_preferences: ^2.3.3
 
+  # AI writing assistant (Gemini)
+  google_generative_ai: ^0.4.6
+
+  # CV import (pick a PDF/DOCX file to parse with AI)
+  file_picker: ^8.1.6
+
+  # DOCX export (zip + OOXML construction)
+  archive: ^4.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

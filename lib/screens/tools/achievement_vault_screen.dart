@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../models/resume.dart';
+import '../../services/ai_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/ai_improve_button.dart';
 
 class AchievementVaultScreen extends StatefulWidget {
   const AchievementVaultScreen({super.key});
@@ -67,6 +69,13 @@ class _AchievementVaultScreenState extends State<AchievementVaultScreen> {
                 controller: descCtrl,
                 maxLines: 3,
                 decoration: const InputDecoration(labelText: 'Description'),
+              ),
+              AiImproveButton(
+                onImprove: () => AiService.instance.improveAchievementDescription(
+                  currentText: descCtrl.text,
+                  title: titleCtrl.text,
+                ),
+                onResult: (text) => descCtrl.text = text,
               ),
             ],
           ),

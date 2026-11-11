@@ -33,6 +33,9 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Gemini API key — never commit
+lib/secrets.dart
+
 # Symbolication related
 app.*.symbols
 

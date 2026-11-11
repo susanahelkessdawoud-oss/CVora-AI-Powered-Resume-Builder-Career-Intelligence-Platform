@@ -14,6 +14,14 @@ import 'screens/tools/resume_score_screen.dart';
 import 'screens/tools/job_matcher_screen.dart';
 import 'screens/tools/github_screen.dart';
 import 'screens/tools/achievement_vault_screen.dart';
+import 'screens/tools/cover_letter_screen.dart';
+import 'screens/tools/ats_analyzer_screen.dart';
+import 'screens/tools/cv_analyzer_screen.dart';
+import 'screens/tools/skills_intelligence_screen.dart';
+import 'screens/tools/cv_import_screen.dart';
+import 'screens/tools/cv_optimizer_screen.dart';
+import 'screens/tools/interview_coach_screen.dart';
+import 'screens/tools/career_advisor_screen.dart';
 import 'screens/export/export_center_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'theme/app_theme.dart';
@@ -73,6 +81,14 @@ class _MyAppState extends State<MyApp> {
         '/job-matcher': (context) => const JobMatcherScreen(),
         '/github': (context) => const GithubScreen(),
         '/achievements-vault': (context) => const AchievementVaultScreen(),
+        '/cover-letter': (context) => const CoverLetterScreen(),
+        '/ats-analyzer': (context) => const AtsAnalyzerScreen(),
+        '/cv-analyzer': (context) => const CvAnalyzerScreen(),
+        '/skills-intelligence': (context) => const SkillsIntelligenceScreen(),
+        '/cv-import': (context) => const CvImportScreen(),
+        '/cv-optimizer': (context) => const CvOptimizerScreen(),
+        '/interview-coach': (context) => const InterviewCoachScreen(),
+        '/career-advisor': (context) => const CareerAdvisorScreen(),
         '/export': (context) => const ExportCenterScreen(),
         '/settings': (context) => const SettingsScreen(),
       },

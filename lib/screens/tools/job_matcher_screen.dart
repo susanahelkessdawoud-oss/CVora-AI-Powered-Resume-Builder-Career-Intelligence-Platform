@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/resume.dart';
+import '../../services/ai_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
@@ -18,6 +19,9 @@ class _JobMatcherScreenState extends State<JobMatcherScreen> {
   late Future<List<Resume>> resumesFuture;
   Resume? selected;
   JobMatchResult? result;
+  String? aiAdvice;
+  bool aiLoading = false;
+  String? aiError;
 
   @override
   void initState() {
@@ -39,7 +43,32 @@ class _JobMatcherScreenState extends State<JobMatcherScreen> {
     if (selected == null || jobDescriptionController.text.trim().isEmpty) return;
     setState(() {
       result = JobMatcher.match(selected!, jobDescriptionController.text);
+      aiAdvice = null;
+      aiError = null;
     });
+  }
+
+  Future<void> _getAiAdvice() async {
+    final r = result;
+    final resume = selected;
+    if (r == null || resume == null) return;
+    setState(() {
+      aiLoading = true;
+      aiError = null;
+    });
+    try {
+      final advice = await AiService.instance.jobMatchAdvice(
+        jobDescription: jobDescriptionController.text,
+        resumeSummary: resume.professionalSummary,
+        matchedKeywords: r.matchedKeywords,
+        missingKeywords: r.missingKeywords,
+      );
+      if (mounted) setState(() => aiAdvice = advice);
+    } catch (e) {
+      if (mounted) setState(() => aiError = 'AI request failed. Try again in a moment.');
+    } finally {
+      if (mounted) setState(() => aiLoading = false);
+    }
   }
 
   Color _matchColor(int percent) {
@@ -227,6 +256,58 @@ class _JobMatcherScreenState extends State<JobMatcherScreen> {
                               ),
                             )
                             .toList(),
+                      ),
+                    ],
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        onPressed: aiLoading ? null : _getAiAdvice,
+                        icon: aiLoading
+                            ? const SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Icon(Icons.auto_awesome, size: 18),
+                        label: Text(aiLoading ? 'Thinking…' : 'Get AI Advice'),
+                      ),
+                    ),
+                    if (aiError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          aiError!,
+                          style: const TextStyle(color: AppTheme.error, fontSize: 12.5),
+                        ),
+                      ),
+                    if (aiAdvice != null) ...[
+                      const SizedBox(height: 10),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppTheme.purple.withValues(alpha: 0.06),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                          border: Border.all(color: AppTheme.purple.withValues(alpha: 0.25)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: const [
+                                Icon(Icons.auto_awesome, size: 16, color: AppTheme.purple),
+                                SizedBox(width: 6),
+                                Text(
+                                  'AI Advice',
+                                  style: TextStyle(fontWeight: FontWeight.w700, color: AppTheme.purple),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(aiAdvice!, style: const TextStyle(fontSize: 13.5)),
+                          ],
+                        ),
                       ),
                     ],
                   ],

@@ -8,6 +8,14 @@ import '../tools/job_matcher_screen.dart';
 import '../tools/resume_score_screen.dart';
 import '../tools/github_screen.dart';
 import '../tools/achievement_vault_screen.dart';
+import '../tools/cover_letter_screen.dart';
+import '../tools/ats_analyzer_screen.dart';
+import '../tools/cv_analyzer_screen.dart';
+import '../tools/skills_intelligence_screen.dart';
+import '../tools/cv_import_screen.dart';
+import '../tools/cv_optimizer_screen.dart';
+import '../tools/interview_coach_screen.dart';
+import '../tools/career_advisor_screen.dart';
 import '../export/export_center_screen.dart';
 import '../settings/settings_screen.dart';
 
@@ -136,6 +144,23 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
+              const SizedBox(height: 10),
+
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    openPage(context, const CvImportScreen());
+                  },
+                  icon: const Icon(Icons.upload_file_outlined),
+                  label: const Text(
+                    'Upload an Existing CV',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+
               const SizedBox(height: 22),
 
               const Text(
@@ -187,10 +212,66 @@ class HomeScreen extends StatelessWidget {
 
                   featureCard(
                     context: context,
+                    icon: Icons.mail_outline,
+                    title: 'Cover Letter',
+                    subtitle: 'AI generated',
+                    page: const CoverLetterScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
                     icon: Icons.code,
                     title: 'GitHub',
                     subtitle: 'Projects',
                     page: const GithubScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.insights_outlined,
+                    title: 'CV Analyzer',
+                    subtitle: 'AI deep dive',
+                    page: const CvAnalyzerScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.rule_folder_outlined,
+                    title: 'ATS Analyzer',
+                    subtitle: 'Parse check',
+                    page: const AtsAnalyzerScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.psychology_outlined,
+                    title: 'Skills',
+                    subtitle: 'Intelligence',
+                    page: const SkillsIntelligenceScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.tune_outlined,
+                    title: 'CV Optimizer',
+                    subtitle: 'Tailor to job',
+                    page: const CvOptimizerScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.mic_none_outlined,
+                    title: 'Interview',
+                    subtitle: 'AI coach',
+                    page: const InterviewCoachScreen(),
+                  ),
+
+                  featureCard(
+                    context: context,
+                    icon: Icons.explore_outlined,
+                    title: 'Career Advisor',
+                    subtitle: 'Plan ahead',
+                    page: const CareerAdvisorScreen(),
                   ),
 
                   featureCard(

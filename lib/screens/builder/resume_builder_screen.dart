@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../../models/resume.dart';
+import '../../services/ai_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/ai_improve_button.dart';
 
 class ResumeBuilderScreen extends StatefulWidget {
   final Resume? existing;
   final String documentType; // 'cv' or 'resume'
+  final int initialPage;
 
   const ResumeBuilderScreen({
     super.key,
     this.existing,
     this.documentType = 'resume',
+    this.initialPage = 0,
   });
 
   @override
@@ -80,7 +84,8 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    currentPage = widget.initialPage.clamp(0, pages.length - 1);
+    _pageController = PageController(initialPage: currentPage);
 
     final r = widget.existing;
     fullNameCtrl = TextEditingController(text: r?.fullName ?? '');
@@ -299,7 +304,8 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
     setState(() => saving = true);
     try {
       final resume = _buildResume();
-      if (widget.existing == null) {
+      final isNewDocument = widget.existing == null || widget.existing!.id.isEmpty;
+      if (isNewDocument) {
         await DatabaseService.instance.createResume(resume);
       } else {
         await DatabaseService.instance.updateResume(
@@ -481,14 +487,27 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
   Widget _summaryPage() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
-      child: TextField(
-        controller: summaryCtrl,
-        maxLines: 10,
-        decoration: const InputDecoration(
-          labelText: 'Professional Summary',
-          hintText: 'Enter your professional summary...',
-          border: OutlineInputBorder(),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextField(
+            controller: summaryCtrl,
+            maxLines: 10,
+            decoration: const InputDecoration(
+              labelText: 'Professional Summary',
+              hintText: 'Enter your professional summary...',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 4),
+          AiImproveButton(
+            onImprove: () => AiService.instance.improveSummary(
+              currentText: summaryCtrl.text,
+              jobTitle: titleCtrl.text,
+            ),
+            onResult: (text) => setState(() => summaryCtrl.text = text),
+          ),
+        ],
       ),
     );
   }
@@ -555,6 +574,15 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
               hintText: 'Describe your responsibilities...',
               border: OutlineInputBorder(),
             ),
+          ),
+          const SizedBox(height: 4),
+          AiImproveButton(
+            onImprove: () => AiService.instance.improveExperienceDescription(
+              currentText: experienceDescCtrl.text,
+              position: jobTitleCtrl.text,
+              company: companyCtrl.text,
+            ),
+            onResult: (text) => setState(() => experienceDescCtrl.text = text),
           ),
         ],
       ),

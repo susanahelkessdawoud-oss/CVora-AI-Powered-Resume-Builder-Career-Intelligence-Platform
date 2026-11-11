@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../models/interview.dart';
 import '../models/resume.dart';
 
 /// Persists [Resume] documents in the Supabase `resumes` table.
@@ -178,6 +179,86 @@ class DatabaseService {
           .delete()
           .eq('id', id)
           .eq('user_id', userId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // --- AI Interview Coach ---
+  static const String _interviewSessionsTable = 'interview_sessions';
+  static const String _interviewAnswersTable = 'interview_answers';
+
+  Future<InterviewSession> createInterviewSession({
+    required String userId,
+    String? resumeId,
+    required String jobDescription,
+  }) async {
+    try {
+      final row = await _client
+          .from(_interviewSessionsTable)
+          .insert({
+            'user_id': userId,
+            'resume_id': resumeId,
+            'job_description': jobDescription,
+          })
+          .select()
+          .single();
+      return InterviewSession.fromRow(row);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<InterviewSession>> getInterviewSessions(String userId) async {
+    try {
+      final rows = await _client
+          .from(_interviewSessionsTable)
+          .select()
+          .eq('user_id', userId)
+          .order('created_at', ascending: false);
+      return rows.map((row) => InterviewSession.fromRow(row)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<InterviewAnswer> addInterviewAnswer({
+    required String sessionId,
+    required String userId,
+    required String question,
+    required String questionType,
+    required String answer,
+    required String feedback,
+    int? score,
+  }) async {
+    try {
+      final row = await _client
+          .from(_interviewAnswersTable)
+          .insert({
+            'session_id': sessionId,
+            'user_id': userId,
+            'question': question,
+            'question_type': questionType,
+            'answer': answer,
+            'feedback': feedback,
+            'score': score,
+          })
+          .select()
+          .single();
+      return InterviewAnswer.fromRow(row);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<InterviewAnswer>> getInterviewAnswers(String sessionId) async {
+    try {
+      final rows = await _client
+          .from(_interviewAnswersTable)
+          .select()
+          .eq('session_id', sessionId)
+          .order('created_at', ascending: true);
+      return rows.map((row) => InterviewAnswer.fromRow(row)).toList();
     } catch (e) {
       rethrow;
     }

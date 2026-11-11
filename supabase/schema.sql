@@ -92,3 +92,64 @@ drop policy if exists "Users can delete their own achievements" on public.achiev
 create policy "Users can delete their own achievements"
   on public.achievements for delete
   using (auth.uid() = user_id);
+
+-- AI Interview Coach: a session is one practice round (tied to a resume
+-- and/or job description); each answer belongs to one session.
+create table if not exists public.interview_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users (id) on delete cascade,
+  resume_id uuid references public.resumes (id) on delete set null,
+  job_description text not null default '',
+  created_at timestamptz not null default now()
+);
+
+create index if not exists interview_sessions_user_id_idx on public.interview_sessions (user_id);
+
+alter table public.interview_sessions enable row level security;
+
+drop policy if exists "Users can view their own interview sessions" on public.interview_sessions;
+create policy "Users can view their own interview sessions"
+  on public.interview_sessions for select
+  using (auth.uid() = user_id);
+
+drop policy if exists "Users can insert their own interview sessions" on public.interview_sessions;
+create policy "Users can insert their own interview sessions"
+  on public.interview_sessions for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "Users can delete their own interview sessions" on public.interview_sessions;
+create policy "Users can delete their own interview sessions"
+  on public.interview_sessions for delete
+  using (auth.uid() = user_id);
+
+create table if not exists public.interview_answers (
+  id uuid primary key default gen_random_uuid(),
+  session_id uuid not null references public.interview_sessions (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  question text not null,
+  question_type text not null default 'behavioral',
+  answer text not null default '',
+  feedback text not null default '',
+  score int,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists interview_answers_session_id_idx on public.interview_answers (session_id);
+
+alter table public.interview_answers enable row level security;
+
+drop policy if exists "Users can view their own interview answers" on public.interview_answers;
+create policy "Users can view their own interview answers"
+  on public.interview_answers for select
+  using (auth.uid() = user_id);
+
+drop policy if exists "Users can insert their own interview answers" on public.interview_answers;
+create policy "Users can insert their own interview answers"
+  on public.interview_answers for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update their own interview answers" on public.interview_answers;
+create policy "Users can update their own interview answers"
+  on public.interview_answers for update
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

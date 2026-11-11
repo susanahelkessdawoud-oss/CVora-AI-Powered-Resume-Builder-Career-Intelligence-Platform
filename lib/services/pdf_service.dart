@@ -122,6 +122,37 @@ class PdfService {
     return doc.save();
   }
 
+  /// Renders a plain-text document (e.g. a generated cover letter) as a
+  /// simple single-column PDF with the candidate's name as a header.
+  static Future<Uint8List> buildLetterPdf({
+    required String fullName,
+    required String body,
+  }) async {
+    final doc = pw.Document();
+
+    doc.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(40),
+        build: (context) => [
+          pw.Text(
+            fullName.isEmpty ? 'Cover Letter' : fullName,
+            style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.SizedBox(height: 4),
+          pw.Divider(color: _accent, thickness: 1.2),
+          pw.SizedBox(height: 16),
+          pw.Text(
+            body,
+            style: const pw.TextStyle(fontSize: 11, lineSpacing: 3),
+          ),
+        ],
+      ),
+    );
+
+    return doc.save();
+  }
+
   static String _dateRange(String start, String end) {
     if (start.isEmpty && end.isEmpty) return '';
     if (start.isEmpty) return end;

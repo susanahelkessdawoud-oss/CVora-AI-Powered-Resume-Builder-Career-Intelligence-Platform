@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/resume.dart';
+import '../../services/ai_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
@@ -16,6 +17,37 @@ class ResumeScoreScreen extends StatefulWidget {
 class _ResumeScoreScreenState extends State<ResumeScoreScreen> {
   late Future<List<Resume>> resumesFuture;
   Resume? selected;
+  String? aiFeedback;
+  bool aiLoading = false;
+  String? aiError;
+
+  String _resumeText(Resume r) {
+    return [
+      r.professionalTitle,
+      r.professionalSummary,
+      ...r.experience.map((e) => '${e.jobTitle} at ${e.company}: ${e.description}'),
+      ...r.education.map((e) => '${e.degree} ${e.fieldOfStudy} - ${e.school}'),
+      'Skills: ${r.skills.join(', ')}',
+    ].where((s) => s.trim().isNotEmpty).join('\n');
+  }
+
+  Future<void> _getAiFeedback() async {
+    final resume = selected;
+    if (resume == null) return;
+    setState(() {
+      aiLoading = true;
+      aiError = null;
+    });
+    try {
+      final feedback =
+          await AiService.instance.resumeFeedback(resumeText: _resumeText(resume));
+      if (mounted) setState(() => aiFeedback = feedback);
+    } catch (e) {
+      if (mounted) setState(() => aiError = 'AI request failed. Try again in a moment.');
+    } finally {
+      if (mounted) setState(() => aiLoading = false);
+    }
+  }
 
   @override
   void initState() {
@@ -103,7 +135,11 @@ class _ResumeScoreScreenState extends State<ResumeScoreScreen> {
                             ),
                           )
                           .toList(),
-                      onChanged: (value) => setState(() => selected = value),
+                      onChanged: (value) => setState(() {
+                        selected = value;
+                        aiFeedback = null;
+                        aiError = null;
+                      }),
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -200,6 +236,58 @@ class _ResumeScoreScreenState extends State<ResumeScoreScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: aiLoading ? null : _getAiFeedback,
+                      icon: aiLoading
+                          ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.auto_awesome, size: 18),
+                      label: Text(aiLoading ? 'Thinking…' : 'Get AI Feedback'),
+                    ),
+                  ),
+                  if (aiError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        aiError!,
+                        style: const TextStyle(color: AppTheme.error, fontSize: 12.5),
+                      ),
+                    ),
+                  if (aiFeedback != null) ...[
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.purple.withValues(alpha: 0.06),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        border: Border.all(color: AppTheme.purple.withValues(alpha: 0.25)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: const [
+                              Icon(Icons.auto_awesome, size: 16, color: AppTheme.purple),
+                              SizedBox(width: 6),
+                              Text(
+                                'AI Feedback',
+                                style: TextStyle(fontWeight: FontWeight.w700, color: AppTheme.purple),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(aiFeedback!, style: const TextStyle(fontSize: 13.5)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             );

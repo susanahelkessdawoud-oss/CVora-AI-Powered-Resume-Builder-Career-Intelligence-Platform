@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 
 import '../../models/resume.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
+import '../../services/docx_service.dart';
 import '../../services/pdf_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -18,6 +22,7 @@ class _ExportCenterScreenState extends State<ExportCenterScreen> {
   late Future<List<Resume>> resumesFuture;
   Resume? selected;
   bool exporting = false;
+  bool exportingDocx = false;
 
   @override
   void initState() {
@@ -50,6 +55,39 @@ class _ExportCenterScreenState extends State<ExportCenterScreen> {
       }
     } finally {
       if (mounted) setState(() => exporting = false);
+    }
+  }
+
+  Future<void> _exportDocx() async {
+    final resume = selected;
+    if (resume == null) return;
+
+    setState(() => exportingDocx = true);
+    try {
+      final bytes = await DocxService.buildResumeDocx(resume);
+      final fileName =
+          '${resume.fullName.isEmpty ? 'resume' : resume.fullName.replaceAll(' ', '_')}.docx';
+      final path = await FilePicker.platform.saveFile(
+        dialogTitle: 'Save DOCX',
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: const ['docx'],
+      );
+      if (path == null) return; // user cancelled
+      await File(path).writeAsBytes(bytes);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Saved to $path')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Could not export DOCX: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => exportingDocx = false);
     }
   }
 
@@ -172,6 +210,21 @@ class _ExportCenterScreenState extends State<ExportCenterScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: exportingDocx ? null : _exportDocx,
+                      icon: exportingDocx
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.description_outlined),
+                      label: Text(exportingDocx ? 'Preparing...' : 'Export as DOCX'),
+                    ),
                   ),
                 ],
               ),
