@@ -809,11 +809,11 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: selected
-                ? AppTheme.purple.withValues(alpha: 0.06)
+                ? AppTheme.navy.withValues(alpha: 0.06)
                 : Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
             border: Border.all(
-              color: selected ? AppTheme.purple : Colors.black12,
+              color: selected ? AppTheme.navy : Colors.black12,
               width: selected ? 2 : 1,
             ),
           ),
@@ -842,7 +842,7 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
               ),
               Icon(
                 selected ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: selected ? AppTheme.purple : Colors.black26,
+                color: selected ? AppTheme.navy : Colors.black26,
               ),
             ],
           ),
@@ -891,7 +891,7 @@ class _StyleThumbnail extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [AppTheme.purple, AppTheme.blue],
+                    colors: [AppTheme.navy, AppTheme.blue],
                   ),
                 ),
               ),
@@ -900,7 +900,7 @@ class _StyleThumbnail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _bar(width: 34, height: 4, color: AppTheme.purple),
+                    _bar(width: 34, height: 4, color: AppTheme.navy),
                     const SizedBox(height: 5),
                     _bar(width: double.infinity, height: 3),
                     const SizedBox(height: 3),
@@ -925,12 +925,12 @@ class _StyleThumbnail extends StatelessWidget {
                     width: 12,
                     height: 12,
                     decoration: const BoxDecoration(
-                      color: AppTheme.purple,
+                      color: AppTheme.navy,
                       shape: BoxShape.circle,
                     ),
                   ),
                   const SizedBox(width: 6),
-                  _bar(width: 30, height: 4, color: AppTheme.purple),
+                  _bar(width: 30, height: 4, color: AppTheme.navy),
                 ],
               ),
               const SizedBox(height: 8),
@@ -988,7 +988,7 @@ class _TemplateThumbnail extends StatelessWidget {
               Container(
                 width: 18,
                 decoration: BoxDecoration(
-                  color: AppTheme.purple.withValues(alpha: 0.85),
+                  color: AppTheme.navy.withValues(alpha: 0.85),
                   borderRadius: BorderRadius.circular(3),
                 ),
                 margin: const EdgeInsets.only(right: 6),
@@ -1014,7 +1014,7 @@ class _TemplateThumbnail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _bar(width: 32, height: 4, color: AppTheme.purple),
+                    _bar(width: 32, height: 4, color: AppTheme.navy),
                     const SizedBox(height: 6),
                     _bar(width: double.infinity, height: 3),
                     const SizedBox(height: 3),
@@ -1031,7 +1031,7 @@ class _TemplateThumbnail extends StatelessWidget {
         return _frame(
           child: Column(
             children: [
-              _bar(width: double.infinity, height: 6, color: AppTheme.purple),
+              _bar(width: double.infinity, height: 6, color: AppTheme.navy),
               const SizedBox(height: 6),
               Expanded(
                 child: GridView.count(
@@ -1060,7 +1060,7 @@ class _TemplateThumbnail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _bar(width: 36, height: 5, color: AppTheme.purple),
+              _bar(width: 36, height: 5, color: AppTheme.navy),
               const SizedBox(height: 8),
               _bar(width: double.infinity, height: 3),
               const SizedBox(height: 3),

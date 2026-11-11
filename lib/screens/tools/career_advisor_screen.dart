@@ -227,7 +227,7 @@ class _CareerAdvisorScreenState extends State<CareerAdvisorScreen> {
 
     return [
       const SizedBox(height: 24),
-      section('Suggested Roles', roles, AppTheme.purple, Icons.work_outline,
+      section('Suggested Roles', roles, AppTheme.navy, Icons.work_outline,
           (m) => (m['role'] as String?) ?? '', (m) => (m['why'] as String?) ?? ''),
       section('Skills To Develop', skills, AppTheme.blue, Icons.trending_up,
           (m) => (m['skill'] as String?) ?? '', (m) => (m['why'] as String?) ?? ''),

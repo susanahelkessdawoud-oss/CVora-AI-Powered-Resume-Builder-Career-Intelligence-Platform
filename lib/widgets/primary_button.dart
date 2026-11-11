@@ -77,7 +77,7 @@ class SecondaryButton extends StatelessWidget {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.purple),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.navy),
                 ),
               )
             : icon != null
@@ -126,10 +126,10 @@ class FeatureCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: AppTheme.purple.withValues(alpha: 0.10),
+                color: AppTheme.navy.withValues(alpha: 0.10),
                 borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               ),
-              child: Icon(icon, color: AppTheme.purple),
+              child: Icon(icon, color: AppTheme.navy),
             ),
             const Spacer(),
             Text(
@@ -247,10 +247,10 @@ class EmptyState extends StatelessWidget {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppTheme.purple.withValues(alpha: 0.10),
+                color: AppTheme.navy.withValues(alpha: 0.10),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 40, color: AppTheme.purple),
+              child: Icon(icon, size: 40, color: AppTheme.navy),
             ),
             const SizedBox(height: AppTheme.spacingXLarge),
             Text(
@@ -284,7 +284,7 @@ class LoadingWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(color: AppTheme.purple),
+          const CircularProgressIndicator(color: AppTheme.navy),
           if (message != null) ...[
             const SizedBox(height: AppTheme.spacingMedium),
             Text(message!, style: AppTheme.bodyMedium),

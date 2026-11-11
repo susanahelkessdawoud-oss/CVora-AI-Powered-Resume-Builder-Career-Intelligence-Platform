@@ -233,7 +233,7 @@ class _SkillsIntelligenceScreenState extends State<SkillsIntelligenceScreen> {
       const SizedBox(height: 24),
       const Text('Your Skills, Categorized', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
       const SizedBox(height: 12),
-      chipGroup('Technical', categorized['technical'] as List?, AppTheme.purple),
+      chipGroup('Technical', categorized['technical'] as List?, AppTheme.navy),
       chipGroup('Tools', categorized['tools'] as List?, AppTheme.blue),
       chipGroup('Languages', categorized['languages'] as List?, AppTheme.green),
       chipGroup('Soft Skills', categorized['soft'] as List?, AppTheme.amber),
@@ -312,9 +312,9 @@ class _SkillsIntelligenceScreenState extends State<SkillsIntelligenceScreen> {
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.purple.withValues(alpha: 0.05),
+              color: AppTheme.navy.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-              border: Border.all(color: AppTheme.purple.withValues(alpha: 0.2)),
+              border: Border.all(color: AppTheme.navy.withValues(alpha: 0.2)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

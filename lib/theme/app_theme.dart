@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Primary Colors
-  static const Color purple = Color(0xFF7C3AED);
-  static const Color purpleLight = Color(0xFFA78BFA);
-  static const Color purpleDark = Color(0xFF6D28D9);
+  static const Color navy = Color(0xFF1E3A5F);
+  static const Color navyLight = Color(0xFF3E6B9E);
+  static const Color navyDark = Color(0xFF0F2138);
 
   // Secondary Colors
   static const Color blue = Color(0xFF0EA5E9);
@@ -24,10 +24,10 @@ class AppTheme {
   static const Color white = Color(0xFFFFFFFF);
 
   // Gradients
-  static const LinearGradient purpleGradient = LinearGradient(
+  static const LinearGradient navyGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [purple, purpleLight],
+    colors: [navy, navyLight],
   );
 
   // Text Styles
@@ -105,7 +105,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: purple,
+      seedColor: navy,
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: white,
@@ -129,7 +129,7 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: purple),
+        borderSide: const BorderSide(color: navy),
       ),
       labelStyle: const TextStyle(color: grey),
       hintStyle: const TextStyle(color: grey),
@@ -140,7 +140,7 @@ class AppTheme {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: purple,
+        backgroundColor: navy,
         foregroundColor: white,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
@@ -154,8 +154,8 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: purple,
-        side: const BorderSide(color: purple),
+        foregroundColor: navy,
+        side: const BorderSide(color: navy),
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
           vertical: spacingMedium,
@@ -168,7 +168,7 @@ class AppTheme {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: purple,
+        foregroundColor: navy,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingMedium,
           vertical: spacingSmall,
@@ -182,11 +182,11 @@ class AppTheme {
         borderRadius: BorderRadius.circular(radiusMedium),
       ),
       color: white,
-      surfaceTintColor: purple,
+      surfaceTintColor: navy,
     ),
     chipTheme: ChipThemeData(
       backgroundColor: light,
-      selectedColor: purple,
+      selectedColor: navy,
       labelStyle: const TextStyle(color: dark),
       showCheckmark: true,
       shape: RoundedRectangleBorder(
@@ -199,7 +199,7 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: purpleLight,
+      seedColor: navyLight,
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: dark,
@@ -227,7 +227,7 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: purpleLight),
+        borderSide: const BorderSide(color: navyLight),
       ),
       labelStyle: const TextStyle(color: grey),
       hintStyle: const TextStyle(color: grey),
@@ -238,7 +238,7 @@ class AppTheme {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: purpleLight,
+        backgroundColor: navyLight,
         foregroundColor: dark,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
@@ -252,8 +252,8 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: purpleLight,
-        side: const BorderSide(color: purpleLight),
+        foregroundColor: navyLight,
+        side: const BorderSide(color: navyLight),
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
           vertical: spacingMedium,
@@ -266,7 +266,7 @@ class AppTheme {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: purpleLight,
+        foregroundColor: navyLight,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingMedium,
           vertical: spacingSmall,
@@ -280,11 +280,11 @@ class AppTheme {
         borderRadius: BorderRadius.circular(radiusMedium),
       ),
       color: const Color(0xFF2D3748),
-      surfaceTintColor: purpleLight,
+      surfaceTintColor: navyLight,
     ),
     chipTheme: ChipThemeData(
       backgroundColor: const Color(0xFF4A5568),
-      selectedColor: purpleLight,
+      selectedColor: navyLight,
       labelStyle: const TextStyle(color: white),
       showCheckmark: true,
       shape: RoundedRectangleBorder(

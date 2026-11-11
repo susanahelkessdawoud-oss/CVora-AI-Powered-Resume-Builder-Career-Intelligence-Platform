@@ -265,20 +265,20 @@ class _ResumeScoreScreenState extends State<ResumeScoreScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.purple.withValues(alpha: 0.06),
+                        color: AppTheme.navy.withValues(alpha: 0.06),
                         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-                        border: Border.all(color: AppTheme.purple.withValues(alpha: 0.25)),
+                        border: Border.all(color: AppTheme.navy.withValues(alpha: 0.25)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: const [
-                              Icon(Icons.auto_awesome, size: 16, color: AppTheme.purple),
+                              Icon(Icons.auto_awesome, size: 16, color: AppTheme.navy),
                               SizedBox(width: 6),
                               Text(
                                 'AI Feedback',
-                                style: TextStyle(fontWeight: FontWeight.w700, color: AppTheme.purple),
+                                style: TextStyle(fontWeight: FontWeight.w700, color: AppTheme.navy),
                               ),
                             ],
                           ),

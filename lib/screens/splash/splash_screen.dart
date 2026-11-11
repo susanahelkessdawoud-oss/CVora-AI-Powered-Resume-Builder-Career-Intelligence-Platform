@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(milliseconds: 1800));
 
     final rememberMe = await PreferencesService.getRememberMe();
     if (!rememberMe && AuthService.instance.isLoggedIn()) {
@@ -36,11 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppTheme.purple, AppTheme.purple.withValues(alpha: 0.7)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppTheme.navyDark, AppTheme.navy, AppTheme.navyLight],
           ),
         ),
         child: Center(
@@ -52,7 +52,18 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 150,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.white.withValues(alpha: 0.12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.25),
+                      blurRadius: 30,
+                      spreadRadius: 4,
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.25),
+                    width: 1.5,
+                  ),
                 ),
                 child: const Icon(
                   Icons.description_outlined,
@@ -72,17 +83,22 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Professional Resume Builder',
+                'AI-Powered Resume Builder & Career Intelligence',
                 style: TextStyle(
-                  fontSize: 14,
-                  letterSpacing: 1,
+                  fontSize: 13,
+                  letterSpacing: 0.5,
                   color: Colors.white70,
                 ),
               ),
               const SizedBox(height: 60),
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.white.withValues(alpha: 0.7),
+              SizedBox(
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white.withValues(alpha: 0.8),
+                  ),
                 ),
               ),
             ],

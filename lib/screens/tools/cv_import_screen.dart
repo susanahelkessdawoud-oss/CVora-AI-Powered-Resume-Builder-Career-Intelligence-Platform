@@ -128,14 +128,14 @@ class _CvImportScreenState extends State<CvImportScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
                   border: Border.all(
-                    color: AppTheme.purple.withValues(alpha: 0.3),
+                    color: AppTheme.navy.withValues(alpha: 0.3),
                     style: BorderStyle.solid,
                   ),
-                  color: AppTheme.purple.withValues(alpha: 0.04),
+                  color: AppTheme.navy.withValues(alpha: 0.04),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.upload_file_outlined, size: 40, color: AppTheme.purple),
+                    Icon(Icons.upload_file_outlined, size: 40, color: AppTheme.navy),
                     const SizedBox(height: 12),
                     if (pickedFileName != null && busy)
                       Text(

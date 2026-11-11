@@ -156,13 +156,13 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppTheme.purple.withValues(alpha: 0.10),
+                        color: AppTheme.navy.withValues(alpha: 0.10),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.description_outlined,
                         size: 38,
-                        color: AppTheme.purple,
+                        color: AppTheme.navy,
                       ),
                     ),
 
@@ -225,12 +225,12 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: AppTheme.purple.withValues(alpha: 0.10),
+                        color: AppTheme.navy.withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Icon(
                         Icons.description_outlined,
-                        color: AppTheme.purple,
+                        color: AppTheme.navy,
                       ),
                     ),
 

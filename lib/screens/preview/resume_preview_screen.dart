@@ -86,7 +86,7 @@ class _ResumePreviewScreenState extends State<ResumePreviewScreen> {
                         r.professionalTitle,
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: AppTheme.purple,
+                          color: AppTheme.navy,
                         ),
                       ),
                     ],
@@ -241,7 +241,7 @@ class _ResumePreviewScreenState extends State<ResumePreviewScreen> {
         style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w800,
-          color: AppTheme.purple,
+          color: AppTheme.navy,
           letterSpacing: 1,
         ),
       ),
@@ -275,7 +275,7 @@ class _ResumePreviewScreenState extends State<ResumePreviewScreen> {
           if (subtitle.isNotEmpty)
             Text(
               subtitle,
-              style: const TextStyle(color: AppTheme.purple, fontSize: 13),
+              style: const TextStyle(color: AppTheme.navy, fontSize: 13),
             ),
           if (body.isNotEmpty) ...[
             const SizedBox(height: 3),

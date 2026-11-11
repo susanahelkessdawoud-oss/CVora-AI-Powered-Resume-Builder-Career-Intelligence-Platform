@@ -78,7 +78,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               child: Text(
                 'CVORA',
                 style: AppTheme.headingMedium.copyWith(
-                  color: AppTheme.purple,
+                  color: AppTheme.navy,
                   letterSpacing: 2,
                 ),
               ),

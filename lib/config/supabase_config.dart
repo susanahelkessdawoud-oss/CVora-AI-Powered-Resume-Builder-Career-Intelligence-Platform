@@ -11,5 +11,5 @@
 class SupabaseConfig {
   static const String url = 'https://bobayuhrningbnsrwvkg.supabase.co';
   static const String publishableKey =
-      'sb_publishable_CWp22UIc3MSUVnd-PvlVxg_O3Rrgg7d';
+      'sb_publishable_EtzSdTy3EazYaQwHAzMP7g_8LFM1Hx0';
 }

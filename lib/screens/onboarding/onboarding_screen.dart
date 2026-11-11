@@ -38,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       title: 'Connect Your Portfolio',
       description: 'Link your GitHub and LinkedIn profiles in seconds.',
       icon: Icons.code,
-      color: Colors.purple,
+      color: AppTheme.navy,
     ),
   ];
 
@@ -139,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: index == currentPage
-                              ? AppTheme.purple
+                              ? AppTheme.navy
                               : Colors.grey.withValues(alpha: 0.3),
                         ),
                       ),

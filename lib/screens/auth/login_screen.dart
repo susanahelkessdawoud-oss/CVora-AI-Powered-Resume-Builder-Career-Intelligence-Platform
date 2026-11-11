@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text(
                 'CVORA',
                 style: AppTheme.headingLarge.copyWith(
-                  color: AppTheme.purple,
+                  color: AppTheme.navy,
                   letterSpacing: 2,
                 ),
               ),

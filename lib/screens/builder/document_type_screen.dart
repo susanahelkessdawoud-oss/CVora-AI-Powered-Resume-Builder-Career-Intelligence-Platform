@@ -125,7 +125,7 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-      decoration: const BoxDecoration(gradient: AppTheme.purpleGradient),
+      decoration: const BoxDecoration(gradient: AppTheme.navyGradient),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -184,11 +184,11 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.purple.withValues(alpha: 0.06)
+              ? AppTheme.navy.withValues(alpha: 0.06)
               : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
           border: Border.all(
-            color: isSelected ? AppTheme.purple : Colors.black12,
+            color: isSelected ? AppTheme.navy : Colors.black12,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -201,10 +201,10 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppTheme.purple.withValues(alpha: 0.1),
+                    color: AppTheme.navy.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(13),
                   ),
-                  child: Icon(option['icon'] as IconData, color: AppTheme.purple),
+                  child: Icon(option['icon'] as IconData, color: AppTheme.navy),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -230,7 +230,7 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
                   isSelected
                       ? Icons.check_circle
                       : Icons.radio_button_unchecked,
-                  color: isSelected ? AppTheme.purple : Colors.black26,
+                  color: isSelected ? AppTheme.navy : Colors.black26,
                 ),
               ],
             ),
@@ -341,10 +341,10 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppTheme.purple.withValues(alpha: 0.1),
+                color: AppTheme.navy.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(step['icon'] as IconData, color: AppTheme.purple, size: 22),
+              child: Icon(step['icon'] as IconData, color: AppTheme.navy, size: 22),
             ),
             const SizedBox(height: 6),
             Text(
