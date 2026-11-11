@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Backs the "Remember me" checkbox on the login screen.
 ///
-/// Supabase always persists the session locally so API calls keep working
+/// Firebase always persists the session locally so API calls keep working
 /// offline-ish; this flag is what decides whether the splash screen is
 /// allowed to use that persisted session to skip straight to Home, or
 /// should send the user back to the login screen instead.

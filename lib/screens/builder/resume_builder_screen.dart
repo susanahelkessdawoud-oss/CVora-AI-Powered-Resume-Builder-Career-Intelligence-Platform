@@ -323,9 +323,9 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
 
   void _showSaveError(Object error) {
     final message = error.toString();
-    final isMissingTable = message.contains('Could not find the table');
+    final isPermissionDenied = message.contains('permission-denied');
 
-    if (!isMissingTable) {
+    if (!isPermissionDenied) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Could not save: $error')));
@@ -335,11 +335,11 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Database not set up yet'),
+        title: const Text('Permission denied'),
         content: const Text(
-          'Your Supabase project is missing the "resumes" table. Open the '
-          'Supabase SQL Editor for your project and run the script from '
-          'supabase/schema.sql in this repo, then try saving again.',
+          'Firestore rejected this write. Make sure firestore.rules has '
+          'been deployed to your Firebase project (firebase deploy '
+          '--only firestore:rules) and that you are signed in.',
         ),
         actions: [
           FilledButton(

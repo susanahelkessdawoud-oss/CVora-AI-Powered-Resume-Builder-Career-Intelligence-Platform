@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../../firebase_options.dart';
 import '../../services/auth_service.dart';
 import '../../services/preferences_service.dart';
 import '../../theme/app_theme.dart';
@@ -11,6 +13,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String? _initError;
+
   @override
   void initState() {
     super.initState();
@@ -18,7 +22,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToHome() async {
-    await Future.delayed(const Duration(milliseconds: 1800));
+    setState(() => _initError = null);
+
+    try {
+      // Initialized here (after the first frame), not in main() before
+      // runApp() — on Windows, firebase_core/cloud_firestore are native
+      // plugins whose startup work would otherwise block that first frame,
+      // leaving the window looking frozen instead of showing this splash.
+      if (Firebase.apps.isEmpty) {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        ).timeout(const Duration(seconds: 20));
+      }
+    } catch (e) {
+      if (mounted) setState(() => _initError = e.toString());
+      return;
+    }
+
+    await Future.delayed(const Duration(milliseconds: 600));
 
     final rememberMe = await PreferencesService.getRememberMe();
     if (!rememberMe && AuthService.instance.isLoggedIn()) {
@@ -91,16 +112,39 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               const SizedBox(height: 60),
-              SizedBox(
-                width: 28,
-                height: 28,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white.withValues(alpha: 0.8),
+              if (_initError == null)
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.white.withValues(alpha: 0.8),
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Could not connect: $_initError',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+                      ),
+                      const SizedBox(height: 16),
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: const BorderSide(color: Colors.white54),
+                        ),
+                        onPressed: _navigateToHome,
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ),
                 ),
-              ),
             ],
           ),
         ),

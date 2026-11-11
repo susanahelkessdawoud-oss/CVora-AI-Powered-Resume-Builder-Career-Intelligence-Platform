@@ -1,7 +1,17 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-/// Thin wrapper around Supabase Auth so the rest of the app never talks
-/// to `Supabase.instance.client` directly.
+/// A lightweight, backend-agnostic view of the signed-in user, so the rest
+/// of the app never depends on Firebase's [User] type directly.
+class AppUser {
+  final String id;
+  final String? email;
+  final String? displayName;
+
+  AppUser({required this.id, this.email, this.displayName});
+}
+
+/// Thin wrapper around Firebase Auth so the rest of the app never talks
+/// to `FirebaseAuth.instance` directly.
 class AuthService {
   static final AuthService _instance = AuthService._internal();
 
@@ -13,34 +23,44 @@ class AuthService {
 
   static AuthService get instance => _instance;
 
-  SupabaseClient get _client => Supabase.instance.client;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
 
-  User? get currentUser => _client.auth.currentUser;
+  AppUser? _wrap(User? user) {
+    if (user == null) return null;
+    return AppUser(id: user.uid, email: user.email, displayName: user.displayName);
+  }
+
+  AppUser? get currentUser => _wrap(_auth.currentUser);
 
   // Login with email and password
-  Future<AuthResponse> login(String email, String password) async {
+  Future<AppUser?> login(String email, String password) async {
     try {
-      return await _client.auth.signInWithPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return _wrap(credential.user);
     } catch (e) {
       rethrow;
     }
   }
 
   // Register with email and password
-  Future<AuthResponse> register(
+  Future<AppUser?> register(
     String email,
     String password, {
     String? displayName,
   }) async {
     try {
-      return await _client.auth.signUp(
+      final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-        data: displayName == null ? null : {'display_name': displayName},
       );
+      if (displayName != null && displayName.trim().isNotEmpty) {
+        await credential.user?.updateDisplayName(displayName.trim());
+        await credential.user?.reload();
+      }
+      return _wrap(_auth.currentUser);
     } catch (e) {
       rethrow;
     }
@@ -49,7 +69,7 @@ class AuthService {
   // Logout
   Future<void> logout() async {
     try {
-      await _client.auth.signOut();
+      await _auth.signOut();
     } catch (e) {
       rethrow;
     }
@@ -58,7 +78,7 @@ class AuthService {
   // Reset password
   Future<void> resetPassword(String email) async {
     try {
-      await _client.auth.resetPasswordForEmail(email);
+      await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       rethrow;
     }
@@ -67,14 +87,11 @@ class AuthService {
   // Update user profile
   Future<void> updateProfile({String? displayName, String? photoUrl}) async {
     try {
-      await _client.auth.updateUser(
-        UserAttributes(
-          data: {
-            if (displayName != null) 'display_name': displayName,
-            if (photoUrl != null) 'photo_url': photoUrl,
-          },
-        ),
-      );
+      final user = _auth.currentUser;
+      if (user == null) return;
+      if (displayName != null) await user.updateDisplayName(displayName);
+      if (photoUrl != null) await user.updatePhotoURL(photoUrl);
+      await user.reload();
     } catch (e) {
       rethrow;
     }
@@ -86,7 +103,7 @@ class AuthService {
   }
 
   // Stream of auth state changes
-  Stream<AuthState> authStateChanges() {
-    return _client.auth.onAuthStateChange;
+  Stream<AppUser?> authStateChanges() {
+    return _auth.authStateChanges().map(_wrap);
   }
 }

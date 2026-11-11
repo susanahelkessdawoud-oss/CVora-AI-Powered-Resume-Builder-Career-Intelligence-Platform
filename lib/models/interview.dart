@@ -12,16 +12,6 @@ class InterviewSession {
     required this.jobDescription,
     required this.createdAt,
   });
-
-  factory InterviewSession.fromRow(Map<String, dynamic> row) {
-    return InterviewSession(
-      id: row['id'] as String,
-      userId: row['user_id'] as String,
-      resumeId: row['resume_id'] as String?,
-      jobDescription: (row['job_description'] as String?) ?? '',
-      createdAt: DateTime.parse(row['created_at'] as String),
-    );
-  }
 }
 
 class InterviewAnswer {
@@ -44,17 +34,4 @@ class InterviewAnswer {
     this.score,
     required this.createdAt,
   });
-
-  factory InterviewAnswer.fromRow(Map<String, dynamic> row) {
-    return InterviewAnswer(
-      id: row['id'] as String,
-      sessionId: row['session_id'] as String,
-      question: (row['question'] as String?) ?? '',
-      questionType: (row['question_type'] as String?) ?? 'behavioral',
-      answer: (row['answer'] as String?) ?? '',
-      feedback: (row['feedback'] as String?) ?? '',
-      score: (row['score'] as num?)?.toInt(),
-      createdAt: DateTime.parse(row['created_at'] as String),
-    );
-  }
 }

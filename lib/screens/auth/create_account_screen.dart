@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/primary_button.dart';
@@ -32,22 +32,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     }
     setState(() => loading = true);
     try {
-      final response = await AuthService().register(
+      await AuthService().register(
         email.text.trim(),
         pass.text,
         displayName: name.text.trim(),
       );
       if (!mounted) return;
-
-      if (response.session == null) {
-        // Supabase requires email confirmation before a session is issued.
-        msg('Account created! Check your email to confirm it, then log in.');
-        Navigator.pushReplacementNamed(context, '/login');
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    } on AuthException catch (e) {
-      if (mounted) msg(e.message);
+      Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      if (mounted) msg(e.message ?? 'Could not create account.');
     } catch (e) {
       if (mounted) msg('Could not create account: $e');
     } finally {

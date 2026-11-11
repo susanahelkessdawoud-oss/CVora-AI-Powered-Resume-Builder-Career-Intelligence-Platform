@@ -1,40 +1,22 @@
 {
   "project_info": {
-    "project_number": "982373084158",
-    "project_id": "application-4ef3d",
-    "storage_bucket": "application-4ef3d.firebasestorage.app"
+    "project_number": "746596322753",
+    "firebase_url": "https://cvora-88544-default-rtdb.firebaseio.com",
+    "project_id": "cvora-88544",
+    "storage_bucket": "cvora-88544.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:982373084158:android:bb15e70fefc9e15f952eaf",
+        "mobilesdk_app_id": "1:746596322753:android:66d472ff7707d8e726f340",
         "android_client_info": {
-          "package_name": "com.example.cvora"
+          "package_name": "com.cvora.cvora"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBZNki9re0zKsg5EZoLG3yn2pLdphSvAO8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:982373084158:android:b7d76f688dd9dcb5952eaf",
-        "android_client_info": {
-          "package_name": "com.mycompany.application"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBZNki9re0zKsg5EZoLG3yn2pLdphSvAO8"
+          "current_key": "AIzaSyDuZ6FnXhROyo4KCF3F8M8jSmcMFAcP8PA"
         }
       ],
       "services": {

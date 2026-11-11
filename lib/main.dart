@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'config/supabase_config.dart';
 import 'providers/theme_manager.dart';
 import 'screens/splash/splash_screen.dart';
 import 'screens/onboarding/onboarding_screen.dart';
@@ -26,12 +24,13 @@ import 'screens/export/export_center_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'theme/app_theme.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Supabase.initialize(
-    url: SupabaseConfig.url,
-    publishableKey: SupabaseConfig.publishableKey,
-  );
+  // Firebase.initializeApp() is awaited inside SplashScreen instead of here.
+  // On Windows, firebase_core/cloud_firestore are native plugins whose
+  // startup work blocks the first frame if awaited before runApp() —
+  // rendering the splash screen immediately and initializing Firebase
+  // after keeps the window responsive instead of appearing frozen.
   runApp(const MyApp());
 }
 
@@ -66,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           : AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       // SplashScreen checks AuthService.instance.isLoggedIn() (backed by
-      // Supabase's persisted session) and routes to /home or /onboarding.
+      // Firebase's persisted session) and routes to /home or /onboarding.
       home: const SplashScreen(),
       routes: {
         '/splash': (context) => const SplashScreen(),

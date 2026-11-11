@@ -93,7 +93,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = AuthService.instance.currentUser;
     final displayName =
-        (user?.userMetadata?['display_name'] as String?)?.trim() ??
+        user?.displayName?.trim() ??
         user?.email?.split('@').first ??
         '';
 
@@ -203,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 0.9,
+                childAspectRatio: 0.78,
                 children: [
                   featureCard(
                     context: context,
