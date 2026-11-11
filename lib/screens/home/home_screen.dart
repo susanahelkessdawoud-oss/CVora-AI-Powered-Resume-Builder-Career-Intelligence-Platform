@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
     required String title,
     required String subtitle,
     required Widget page,
+    Color accent = AppTheme.purple,
   }) {
     return InkWell(
       borderRadius: BorderRadius.circular(18),
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+          border: Border.all(color: accent.withValues(alpha: 0.12)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -59,10 +60,14 @@ class HomeScreen extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: AppTheme.purple.withValues(alpha: 0.10),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [accent.withValues(alpha: 0.22), accent.withValues(alpha: 0.10)],
+                ),
                 borderRadius: BorderRadius.circular(13),
               ),
-              child: Icon(icon, color: AppTheme.purple),
+              child: Icon(icon, color: accent),
             ),
 
             const Spacer(),
@@ -114,16 +119,38 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                displayName.isEmpty ? 'Welcome to CVORA 👋' : 'Welcome, $displayName 👋',
-                style: const TextStyle(fontSize: 27, fontWeight: FontWeight.w900),
-              ),
-
-              const SizedBox(height: 7),
-
-              const Text(
-                'Build a resume that represents you.',
-                style: TextStyle(fontSize: 15, color: Colors.grey),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: AppTheme.purpleGradient,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusLarge),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.purple.withValues(alpha: 0.25),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      displayName.isEmpty ? 'Welcome to CVORA 👋' : 'Welcome, $displayName 👋',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Build a resume that represents you — with AI in every step.',
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 22),
@@ -184,6 +211,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'My Resumes',
                     subtitle: 'View resumes',
                     page: const MyResumesScreen(filterType: 'resume'),
+                    accent: AppTheme.purple,
                   ),
 
                   featureCard(
@@ -192,6 +220,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'My CVs',
                     subtitle: 'View CVs',
                     page: const MyResumesScreen(filterType: 'cv'),
+                    accent: AppTheme.blue,
                   ),
 
                   featureCard(
@@ -200,6 +229,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Improve',
                     subtitle: 'Suggestions',
                     page: const ResumeScoreScreen(),
+                    accent: AppTheme.success,
                   ),
 
                   featureCard(
@@ -208,6 +238,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Match Job',
                     subtitle: 'Compare',
                     page: const JobMatcherScreen(),
+                    accent: const Color(0xFFF59E0B),
                   ),
 
                   featureCard(
@@ -216,6 +247,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Cover Letter',
                     subtitle: 'AI generated',
                     page: const CoverLetterScreen(),
+                    accent: const Color(0xFFEC4899),
                   ),
 
                   featureCard(
@@ -224,6 +256,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'GitHub',
                     subtitle: 'Projects',
                     page: const GithubScreen(),
+                    accent: const Color(0xFF334155),
                   ),
 
                   featureCard(
@@ -232,6 +265,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'CV Analyzer',
                     subtitle: 'AI deep dive',
                     page: const CvAnalyzerScreen(),
+                    accent: AppTheme.purpleDark,
                   ),
 
                   featureCard(
@@ -240,6 +274,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'ATS Analyzer',
                     subtitle: 'Parse check',
                     page: const AtsAnalyzerScreen(),
+                    accent: const Color(0xFF14B8A6),
                   ),
 
                   featureCard(
@@ -248,6 +283,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Skills',
                     subtitle: 'Intelligence',
                     page: const SkillsIntelligenceScreen(),
+                    accent: const Color(0xFF8B5CF6),
                   ),
 
                   featureCard(
@@ -256,6 +292,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'CV Optimizer',
                     subtitle: 'Tailor to job',
                     page: const CvOptimizerScreen(),
+                    accent: AppTheme.warning,
                   ),
 
                   featureCard(
@@ -264,6 +301,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Interview',
                     subtitle: 'AI coach',
                     page: const InterviewCoachScreen(),
+                    accent: const Color(0xFF06B6D4),
                   ),
 
                   featureCard(
@@ -272,6 +310,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Career Advisor',
                     subtitle: 'Plan ahead',
                     page: const CareerAdvisorScreen(),
+                    accent: const Color(0xFF6366F1),
                   ),
 
                   featureCard(
@@ -280,6 +319,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Vault',
                     subtitle: 'Achievements',
                     page: const AchievementVaultScreen(),
+                    accent: const Color(0xFFFBBF24),
                   ),
 
                   featureCard(
@@ -288,6 +328,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Export',
                     subtitle: 'Get your PDF',
                     page: const ExportCenterScreen(),
+                    accent: const Color(0xFF64748B),
                   ),
                 ],
               ),

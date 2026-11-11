@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -28,16 +30,16 @@ class _CvImportScreenState extends State<CvImportScreen> {
       error = null;
     });
 
-    final picked = await FilePicker.platform.pickFiles(
+    final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: const ['pdf', 'docx'],
-      withData: true,
     );
-    if (picked == null || picked.files.isEmpty) return;
+    if (file == null) return;
 
-    final file = picked.files.first;
-    final bytes = file.bytes;
-    if (bytes == null) {
+    Uint8List bytes;
+    try {
+      bytes = await file.readAsBytes();
+    } catch (_) {
       setState(() => error = 'Could not read that file. Try a different one.');
       return;
     }

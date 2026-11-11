@@ -52,7 +52,7 @@ dependencies:
   google_generative_ai: ^0.4.6
 
   # CV import (pick a PDF/DOCX file to parse with AI)
-  file_picker: ^8.1.6
+  file_picker: ^13.3.3
 
   # DOCX export (zip + OOXML construction)
   archive: ^4.0.9

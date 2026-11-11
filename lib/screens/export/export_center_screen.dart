@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
@@ -67,17 +65,17 @@ class _ExportCenterScreenState extends State<ExportCenterScreen> {
       final bytes = await DocxService.buildResumeDocx(resume);
       final fileName =
           '${resume.fullName.isEmpty ? 'resume' : resume.fullName.replaceAll(' ', '_')}.docx';
-      final path = await FilePicker.platform.saveFile(
+      final uri = await FilePicker.saveFile(
         dialogTitle: 'Save DOCX',
         fileName: fileName,
-        type: FileType.custom,
-        allowedExtensions: const ['docx'],
+        bytes: bytes,
+        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       );
-      if (path == null) return; // user cancelled
-      await File(path).writeAsBytes(bytes);
+      if (uri == null) return; // user cancelled
       if (mounted) {
+        final display = uri.scheme == 'file' ? uri.toFilePath() : uri.toString();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Saved to $path')),
+          SnackBar(content: Text('Saved to $display')),
         );
       }
     } catch (e) {
