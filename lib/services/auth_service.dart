@@ -102,8 +102,15 @@ class AuthService {
     return currentUser != null;
   }
 
-  // Stream of auth state changes
+  // Stream of auth state changes (sign-in/sign-out only)
   Stream<AppUser?> authStateChanges() {
     return _auth.authStateChanges().map(_wrap);
+  }
+
+  // Superset of authStateChanges that also fires on profile updates (e.g.
+  // display name changes, or a cold-start session restoring with the full
+  // profile arriving a moment after the initial uid-only user).
+  Stream<AppUser?> userChanges() {
+    return _auth.userChanges().map(_wrap);
   }
 }

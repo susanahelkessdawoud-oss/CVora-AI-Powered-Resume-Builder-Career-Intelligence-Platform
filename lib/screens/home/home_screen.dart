@@ -101,12 +101,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthService.instance.currentUser;
-    final displayName =
-        user?.displayName?.trim() ??
-        user?.email?.split('@').first ??
-        '';
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -146,13 +140,31 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      displayName.isEmpty ? 'Welcome to CVORA 👋' : 'Welcome, $displayName 👋',
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                      ),
+                    // Firebase can briefly return a partially-populated
+                    // User (uid only, no email yet) right after a cold
+                    // start restores the persisted session — listening to
+                    // authStateChanges() instead of reading currentUser
+                    // once means this corrects itself the moment the full
+                    // profile loads, rather than showing the generic
+                    // greeting for the rest of the screen's lifetime.
+                    StreamBuilder<AppUser?>(
+                      stream: AuthService.instance.userChanges(),
+                      initialData: AuthService.instance.currentUser,
+                      builder: (context, snapshot) {
+                        final user = snapshot.data;
+                        final displayName =
+                            user?.displayName?.trim() ??
+                            user?.email?.split('@').first ??
+                            '';
+                        return Text(
+                          displayName.isEmpty ? 'Welcome to CVORA 👋' : 'Welcome, $displayName 👋',
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 6),
                     const Text(
