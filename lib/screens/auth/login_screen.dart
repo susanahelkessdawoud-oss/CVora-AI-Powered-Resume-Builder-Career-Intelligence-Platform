@@ -57,6 +57,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // One-tap shortcut into the shared demo account — for quickly showing
+  // the app without typing credentials each time.
+  Future<void> quickDemoLogin() async {
+    email.text = 'demo.susanah@cvora.app';
+    password.text = 'Cvora#2026Demo';
+    await login();
+  }
+
   void msg(String x) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(x)));
 
@@ -129,6 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             PrimaryButton(label: 'Login', onPressed: login, isLoading: loading),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: OutlinedButton.icon(
+                onPressed: loading ? null : quickDemoLogin,
+                icon: const Icon(Icons.bolt_outlined, size: 18),
+                label: const Text('Quick Demo Login'),
+              ),
+            ),
             const SizedBox(height: 12),
             Center(
               child: TextButton(

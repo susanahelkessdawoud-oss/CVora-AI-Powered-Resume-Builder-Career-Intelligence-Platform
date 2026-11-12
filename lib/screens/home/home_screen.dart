@@ -34,6 +34,13 @@ class HomeScreen extends StatelessWidget {
     required Widget page,
     Color accent = AppTheme.navy,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Several accent colors are deliberately very dark navy for a subtle
+    // look in light mode — on a dark background that same color (and an
+    // icon drawn in it) nearly disappears, so lighten it for display here.
+    final displayAccent =
+        isDark ? Color.lerp(accent, Colors.white, 0.45)! : accent;
+
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: () {
@@ -44,7 +51,7 @@ class HomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: accent.withValues(alpha: 0.12)),
+          border: Border.all(color: displayAccent.withValues(alpha: isDark ? 0.3 : 0.12)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -63,11 +70,14 @@ class HomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [accent.withValues(alpha: 0.22), accent.withValues(alpha: 0.10)],
+                  colors: [
+                    displayAccent.withValues(alpha: isDark ? 0.3 : 0.22),
+                    displayAccent.withValues(alpha: isDark ? 0.15 : 0.10),
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(13),
               ),
-              child: Icon(icon, color: accent),
+              child: Icon(icon, color: displayAccent),
             ),
 
             const Spacer(),

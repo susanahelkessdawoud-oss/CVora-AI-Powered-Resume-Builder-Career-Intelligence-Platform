@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     _themeService.isDarkModeNotifier.addListener(() {
       setState(() {});
     });
+    _themeService.load();
   }
 
   @override

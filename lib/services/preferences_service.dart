@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferencesService {
   static const _rememberMeKey = 'remember_me';
   static const _savedEmailKey = 'saved_email';
+  static const _notificationsKey = 'notifications_enabled';
 
   static Future<bool> getRememberMe() async {
     final prefs = await SharedPreferences.getInstance();
@@ -28,5 +29,15 @@ class PreferencesService {
     } else {
       await prefs.remove(_savedEmailKey);
     }
+  }
+
+  static Future<bool> getNotificationsEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_notificationsKey) ?? true;
+  }
+
+  static Future<void> setNotificationsEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_notificationsKey, enabled);
   }
 }

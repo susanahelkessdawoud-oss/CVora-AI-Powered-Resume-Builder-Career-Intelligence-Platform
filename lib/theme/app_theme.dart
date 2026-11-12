@@ -195,16 +195,23 @@ class AppTheme {
     ),
   );
 
-  // Dark Theme
+  // Dark Theme — a genuinely navy dark mode (not generic slate-gray):
+  // the background and surfaces are tinted dark navy so the brand reads
+  // through even at night, with enough lightness steps between
+  // background/surface/border for real contrast.
+  static const Color _darkBg = Color(0xFF0A1628);
+  static const Color _darkSurface = Color(0xFF13273F);
+  static const Color _darkBorder = Color(0xFF2A4160);
+
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
       seedColor: navyLight,
       brightness: Brightness.dark,
     ),
-    scaffoldBackgroundColor: dark,
+    scaffoldBackgroundColor: _darkBg,
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF2D3748),
+      backgroundColor: _darkSurface,
       elevation: 0,
       iconTheme: IconThemeData(color: white),
       titleTextStyle: TextStyle(
@@ -216,21 +223,21 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color(0xFF2D3748),
+      fillColor: _darkSurface,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: Color(0xFF4A5568)),
+        borderSide: const BorderSide(color: _darkBorder),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: Color(0xFF4A5568)),
+        borderSide: const BorderSide(color: _darkBorder),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: navyLight),
+        borderSide: const BorderSide(color: navyLight, width: 1.5),
       ),
-      labelStyle: const TextStyle(color: grey),
-      hintStyle: const TextStyle(color: grey),
+      labelStyle: const TextStyle(color: Color(0xFF9DB4D1)),
+      hintStyle: const TextStyle(color: Color(0xFF6B84A3)),
       contentPadding: const EdgeInsets.symmetric(
         horizontal: spacingMedium,
         vertical: spacingMedium,
@@ -239,7 +246,7 @@ class AppTheme {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: navyLight,
-        foregroundColor: dark,
+        foregroundColor: white,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
           vertical: spacingMedium,
@@ -252,7 +259,7 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: navyLight,
+        foregroundColor: Colors.white,
         side: const BorderSide(color: navyLight),
         padding: const EdgeInsets.symmetric(
           horizontal: spacingLarge,
@@ -266,7 +273,7 @@ class AppTheme {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: navyLight,
+        foregroundColor: const Color(0xFF8FB4E3),
         padding: const EdgeInsets.symmetric(
           horizontal: spacingMedium,
           vertical: spacingSmall,
@@ -278,12 +285,13 @@ class AppTheme {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
+        side: const BorderSide(color: _darkBorder),
       ),
-      color: const Color(0xFF2D3748),
+      color: _darkSurface,
       surfaceTintColor: navyLight,
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: const Color(0xFF4A5568),
+      backgroundColor: _darkBorder,
       selectedColor: navyLight,
       labelStyle: const TextStyle(color: white),
       showCheckmark: true,
@@ -291,5 +299,15 @@ class AppTheme {
         borderRadius: BorderRadius.circular(radiusSmall),
       ),
     ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: white),
+      bodyMedium: TextStyle(color: white),
+      bodySmall: TextStyle(color: Color(0xFF9DB4D1)),
+      titleLarge: TextStyle(color: white),
+      titleMedium: TextStyle(color: white),
+      titleSmall: TextStyle(color: white),
+      labelLarge: TextStyle(color: white),
+    ),
+    dividerColor: _darkBorder,
   );
 }
