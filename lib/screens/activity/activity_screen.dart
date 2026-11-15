@@ -32,10 +32,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
     try {
       final resumes = await DatabaseService.instance.getResumes(uid);
       resumes.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-      if (mounted) setState(() {
-        _resumes = resumes;
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _resumes = resumes;
+          _loading = false;
+        });
+      }
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }

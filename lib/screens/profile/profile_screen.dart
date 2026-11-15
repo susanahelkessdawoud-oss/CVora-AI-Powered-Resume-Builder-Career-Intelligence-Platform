@@ -31,10 +31,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     try {
       final doc = await FirebaseFirestore.instance.collection('userProfiles').doc(uid).get();
-      if (mounted) setState(() {
-        _profile = doc.data();
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _profile = doc.data();
+          _loading = false;
+        });
+      }
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
