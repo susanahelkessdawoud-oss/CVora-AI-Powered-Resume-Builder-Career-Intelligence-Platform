@@ -29,9 +29,15 @@ class JobMatcher {
   };
 
   static List<String> _tokenize(String text) {
-    final words = RegExp(
-      r"[a-zA-Z][a-zA-Z0-9+#.\-]{1,}",
-    ).allMatches(text).map((m) => m.group(0)!.toLowerCase()).toList();
+    final words = RegExp(r"[a-zA-Z][a-zA-Z0-9+#.\-]{1,}")
+        .allMatches(text)
+        .map((m) => m.group(0)!.toLowerCase())
+        // Sentence-ending punctuation ("reporting.") gets captured by the
+        // trailing "." in the pattern above (needed internally for "C#"/
+        // "node.js"); strip it back off rather than showing it to the user.
+        .map((w) => w.replaceAll(RegExp(r'[.\-]+$'), ''))
+        .where((w) => w.isNotEmpty)
+        .toList();
     return words
         .where((w) => w.length >= 3 && !_stopWords.contains(w))
         .toList();

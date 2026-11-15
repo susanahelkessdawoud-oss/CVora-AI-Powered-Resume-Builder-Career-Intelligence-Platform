@@ -168,9 +168,15 @@ class AiService {
       ..writeln(
         'Give 2-4 short, specific, actionable sentences of advice on how '
         'they could honestly strengthen their resume for this role. '
-        'Do not invent experience they do not have — only suggest '
-        'rewording, reordering, or emphasizing things they may already '
-        'do. No markdown, no preamble, no bullet points.',
+        'Only reference skills, tools, projects, or responsibilities that '
+        'are explicitly present in their resume summary or in the matched '
+        'keywords below — suggest rewording, reordering, or emphasizing '
+        'that existing content. Never propose adding a claim, skill, '
+        'responsibility, or activity (e.g. "mention your code review '
+        'experience") that is not already stated, even phrased as a '
+        'suggestion — if the job needs something their resume does not '
+        'show, say that it is a genuine gap instead of a wording fix. '
+        'No markdown, no preamble, no bullet points.',
       )
       ..writeln('Job description:')
       ..writeln(jobDescription.trim())
