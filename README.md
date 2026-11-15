@@ -1,24 +1,146 @@
-# CVora-AI-Powered-Resume-Builder-Career-Intelligence-Platform
-An intelligent AI-powered platform that helps users build, analyze, optimize, and tailor professional resumes, perform ATS analysis, match job descriptions, and accelerate career development using advanced AI technologies.
+# CVora — AI-Powered Resume Builder & Career Intelligence Platform
 
-## AI features (Google Gemini)
+An intelligent, AI-first platform that helps users build, analyze, optimize,
+and tailor professional resumes — perform ATS analysis, match job
+descriptions, practice interviews, and accelerate career development, all
+backed by Google Gemini and Firebase.
 
-- **Improve with AI** — rewrite the professional summary, an experience
-  description, or an achievement description, right from the resume
-  builder / Achievement Vault.
-- **Job Matcher → Get AI Advice** — turns the keyword match score into a
-  few sentences of honest, actionable advice for the selected job
-  description.
-- **Resume Score → Get AI Feedback** — a reviewer's take on the single
-  most impactful improvement to make next.
-- **Cover Letter** — pick a saved resume, paste a job description, and
-  generate a tailored, editable, PDF-exportable cover letter.
+Graduation project — iSchool X / Orange Digital Center Mobile Development
+Track, in collaboration with NTI (National Telecommunication Institute).
 
-To enable these:
-```bash
-cp lib/secrets.example.dart lib/secrets.dart
-# then edit lib/secrets.dart and paste your key from https://aistudio.google.com/apikey
+## Features
+
+### Core
+- **Firebase Authentication** — email/password sign up, login, logout,
+  password reset, profile (display name) editing.
+- **Guided resume/CV builder** — personal info, summary, education,
+  experience, skills, projects, achievements, certifications, with a live
+  completeness score and a choice of visual styles/templates.
+- **My Resumes / My CVs** — manage every document you've built.
+- **PDF and DOCX export**, mirroring the in-app preview.
+- **Persistent dark / light theme**, genuinely navy-branded in both modes.
+
+### AI-powered tools (Google Gemini)
+- **Upload an Existing CV** — AI Engine 1 (Document Understanding): send a
+  PDF/DOCX directly to Gemini and get a structured, editable draft back —
+  nothing is saved until you review it.
+- **Improve with AI** — rewrite a summary, experience bullet, or
+  achievement description on demand, right where you're editing it.
+- **CV Analyzer** — a holistic, category-scored AI evaluation (content
+  quality, professional language, experience impact, skills relevance,
+  structure), with strengths/weaknesses/critical issues and a "Fix This"
+  shortcut back into the builder.
+- **ATS Analyzer** — deterministic parsing/formatting checks (contact
+  fields, section presence, date consistency, unsafe characters, keyword
+  density) plus AI fix suggestions — distinct from CV Analyzer, which
+  judges *quality*, not *parseability*.
+- **Skills Intelligence** — categorizes existing skills, flags
+  near-duplicates, and (optionally against a pasted job description)
+  identifies genuine gaps with portfolio project ideas. Never invents a
+  skill you didn't list.
+- **Job Matcher** — keyword-overlap score against a job description, plus
+  AI advice on how to honestly strengthen your resume for it.
+- **CV Optimizer** — tailors your resume to a specific job with
+  before/after rewrites; you accept or reject each change individually,
+  saved as a new document so the original is never touched.
+- **Cover Letter Generator** — pick a resume, paste a job description, get
+  a tailored, editable, exportable cover letter.
+- **Interview Coach** — generates technical/behavioral/CV-based/job-specific
+  questions, evaluates your answers honestly with a score and feedback, and
+  keeps a history of past practice sessions.
+- **Career Advisor** — suggests roles, skills to develop, and a phased
+  learning roadmap, every item grounded in your actual background.
+- **Achievement Vault** — save achievements once, reuse them across CVs.
+- **GitHub Portfolio Import** — pull your public repos in as projects.
+
+## Architecture
+
+- **Flutter** (Android, Windows desktop, Web) — single codebase.
+- **Firebase Auth** for authentication; **Cloud Firestore** for data
+  (`resumes`, `achievements`, `interview_sessions`, `interview_answers`),
+  secured by `firestore.rules` (owner-only read/write per document).
+- **Google Gemini** (`google_generative_ai`) for every AI feature — see
+  `lib/services/ai_service.dart` for all prompts.
+- No custom backend server — the Flutter app talks to Firebase and Gemini
+  directly; Firestore security rules are the only access control layer.
+
+## Folder structure
+
 ```
-`lib/secrets.dart` is gitignored — never commit a real key. Without a key
-the app still runs fine; only the AI-assisted actions show an error when
-tapped.
+lib/
+  main.dart                  # entry point, routes
+  firebase_options.dart      # generated by flutterfire configure
+  secrets.dart                # gitignored — your Gemini API key
+  models/                     # Resume (+ embedded Education/Experience/
+                               # Project/Achievement/Certification), Interview
+  providers/theme_manager.dart
+  services/
+    auth_service.dart         # Firebase Auth wrapper
+    database_service.dart     # Firestore persistence
+    ai_service.dart           # every Gemini prompt/call
+    pdf_service.dart / docx_service.dart
+    preferences_service.dart  # SharedPreferences (remember me, dark mode, notifications)
+  screens/
+    splash/  onboarding/  auth/  home/  builder/  resumes/  preview/
+    settings/  export/
+    tools/   # ats_analyzer, cv_analyzer, skills_intelligence, job_matcher,
+              # cv_optimizer, cover_letter, interview_coach, career_advisor,
+              # achievement_vault, cv_import, github
+  theme/app_theme.dart         # navy light/dark design system
+  widgets/                     # ai_improve_button, app_text_field, ...
+  utils/                       # ats_checker, job_matcher, resume_scorer, validators
+test/                          # model, scorer, matcher, validator, widget tests
+firestore.rules / firestore.indexes.json / firebase.json / .firebaserc
+```
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   flutter pub get
+   ```
+
+2. **Firebase** — this repo is already wired to a Firebase project
+   (`firebase_options.dart` and `android/app/google-services.json` are
+   committed; Firebase's client config is designed to be public, real
+   security is the Firestore rules). To point it at your *own* project
+   instead:
+   ```bash
+   dart pub global activate flutterfire_cli
+   firebase login
+   flutterfire configure
+   firebase deploy --only firestore:rules,firestore:indexes
+   ```
+   Then enable **Authentication → Sign-in method → Email/Password** in the
+   Firebase console.
+
+3. **Gemini API key** (powers every AI feature):
+   ```bash
+   cp lib/secrets.example.dart lib/secrets.dart
+   # edit lib/secrets.dart and paste your key from https://aistudio.google.com/apikey
+   ```
+   `lib/secrets.dart` is gitignored — never commit a real key. Without a key
+   the app still runs fine; only AI-assisted actions show an error when
+   tapped.
+
+4. **Run & verify:**
+   ```bash
+   flutter run              # Windows desktop, or -d <device> for Android/web
+   flutter analyze
+   flutter test
+   ```
+
+## Demo account
+
+For quick testing/demos, the login screen has a **Quick Demo Login**
+button that signs in as a shared demo account (`demo.susanah@cvora.app`)
+in one tap — already set up with a real imported CV.
+
+## Notes
+
+- Google / Apple sign-in buttons are UI only until OAuth providers are
+  enabled in Firebase.
+- PDF/DOCX export and AI document import work on every supported platform;
+  Firebase's native Windows plugins require initializing *after* the first
+  frame (done in `SplashScreen`), not before `runApp()`, or the window
+  appears to hang on launch.
