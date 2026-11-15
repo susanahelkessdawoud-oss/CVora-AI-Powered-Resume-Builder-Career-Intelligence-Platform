@@ -930,7 +930,7 @@ class _StyleThumbnail extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 6),
-                  _bar(width: 30, height: 4, color: AppTheme.navy),
+                  _bar(width: 24, height: 4, color: AppTheme.navy),
                 ],
               ),
               const SizedBox(height: 8),
