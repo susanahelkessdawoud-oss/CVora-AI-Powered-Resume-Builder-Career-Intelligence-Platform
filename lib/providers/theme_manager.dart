@@ -12,16 +12,18 @@ class ThemeService {
 
   static const _darkModeKey = 'dark_mode_enabled';
 
-  final ValueNotifier<bool> _isDarkModeNotifier = ValueNotifier(false);
+  // Dark-first brand: the app opens in dark mode unless the user has
+  // explicitly switched to light.
+  final ValueNotifier<bool> _isDarkModeNotifier = ValueNotifier(true);
 
   bool get isDarkMode => _isDarkModeNotifier.value;
 
   /// Loads the persisted preference. Call once, early (e.g. in the first
-  /// screen's initState) — the notifier starts at `false` until this
-  /// resolves, then flips to the saved value.
+  /// screen's initState) — the notifier starts at `true` until this
+  /// resolves, then flips to the saved value if the user picked one.
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDarkModeNotifier.value = prefs.getBool(_darkModeKey) ?? false;
+    _isDarkModeNotifier.value = prefs.getBool(_darkModeKey) ?? true;
   }
 
   void toggleTheme() {

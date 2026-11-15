@@ -549,4 +549,44 @@ Respond with ONLY this exact JSON shape, no markdown fences, no commentary:
     final trimmed = text.trim();
     return trimmed.isEmpty ? placeholder : trimmed;
   }
+
+  /// A conversational answer to a free-form question about the user's
+  /// CV/career context, grounded only in the context actually supplied —
+  /// never allowed to invent skills, scores or employers the user didn't
+  /// provide.
+  Future<String> chatAboutCv({
+    required String question,
+    String? resumeSummary,
+    String? lastAnalysisNote,
+    String? selectedJobTitle,
+    List<Map<String, String>> history = const [],
+  }) {
+    final prompt = StringBuffer()
+      ..writeln(
+        'You are the CVora AI assistant, embedded in a resume-builder app. '
+        'Answer the user\'s question conversationally, in 2-5 short '
+        'sentences, grounded ONLY in the context below. Never invent a '
+        'skill, score, employer or metric that is not already present in '
+        'the context — if you don\'t have enough information, say so and '
+        'suggest where in the app they can get it (e.g. "run the ATS '
+        'Analyzer first").',
+      );
+    if (resumeSummary != null && resumeSummary.trim().isNotEmpty) {
+      prompt.writeln('Current CV summary:\n${resumeSummary.trim()}');
+    }
+    if (lastAnalysisNote != null && lastAnalysisNote.trim().isNotEmpty) {
+      prompt.writeln('Latest analysis note:\n${lastAnalysisNote.trim()}');
+    }
+    if (selectedJobTitle != null && selectedJobTitle.trim().isNotEmpty) {
+      prompt.writeln('Job the user is targeting: ${selectedJobTitle.trim()}');
+    }
+    if (history.isNotEmpty) {
+      prompt.writeln('Recent conversation:');
+      for (final turn in history) {
+        prompt.writeln('${turn['role']}: ${turn['text']}');
+      }
+    }
+    prompt.writeln('User question: ${question.trim()}');
+    return _generate(prompt.toString());
+  }
 }

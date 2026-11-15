@@ -4,6 +4,7 @@ import 'screens/splash/splash_screen.dart';
 import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/auth/login_screen.dart' as auth_login;
 import 'screens/auth/create_account_screen.dart' as auth_register;
+import 'screens/auth/forgot_password_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/resumes/my_resumes_screen.dart';
 import 'screens/builder/resume_builder_screen.dart';
@@ -22,6 +23,8 @@ import 'screens/tools/interview_coach_screen.dart';
 import 'screens/tools/career_advisor_screen.dart';
 import 'screens/export/export_center_screen.dart';
 import 'screens/settings/settings_screen.dart';
+import 'screens/profile/profile_screen.dart';
+import 'screens/tools/ai_assistant_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -73,6 +76,7 @@ class _MyAppState extends State<MyApp> {
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const auth_login.LoginScreen(),
         '/register': (context) => const auth_register.CreateAccountScreen(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/home': (context) => const HomeScreen(),
         '/my-resumes': (context) => const MyResumesScreen(),
         '/resume-builder': (context) => const ResumeBuilderScreen(),
@@ -91,6 +95,8 @@ class _MyAppState extends State<MyApp> {
         '/career-advisor': (context) => const CareerAdvisorScreen(),
         '/export': (context) => const ExportCenterScreen(),
         '/settings': (context) => const SettingsScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/ai-assistant': (context) => const AiAssistantScreen(),
       },
     );
   }

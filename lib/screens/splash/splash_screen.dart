@@ -58,69 +58,59 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.background,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [AppTheme.navyDark, AppTheme.navy, AppTheme.navyLight],
-          ),
-        ),
+        decoration: const BoxDecoration(color: AppTheme.background),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.95),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.aura.withValues(alpha: 0.25),
-                      blurRadius: 36,
-                      spreadRadius: 2,
+              const CvoraMark(size: 132, animate: true),
+              const SizedBox(height: 28),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.outfit(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  children: const [
+                    TextSpan(text: 'CV'),
+                    TextSpan(text: 'o', style: TextStyle(color: AppTheme.primaryLight)),
+                    TextSpan(text: 'ra'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'BUILD · OPTIMIZE · GROW',
+                style: GoogleFonts.inter(
+                  fontSize: 12.5,
+                  letterSpacing: 2,
+                  color: AppTheme.mutedText,
+                ),
+              ),
+              const SizedBox(height: 64),
+              if (_initError == null)
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 140,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          minHeight: 4,
+                          backgroundColor: AppTheme.border,
+                          valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'Loading your workspace...',
+                      style: GoogleFonts.inter(fontSize: 12.5, color: AppTheme.mutedText),
                     ),
                   ],
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.4),
-                    width: 1.5,
-                  ),
-                ),
-                padding: const EdgeInsets.all(28),
-                child: const CvoraMark(size: 94, animate: true),
-              ),
-              const SizedBox(height: 30),
-              Text(
-                'CVORA',
-                style: GoogleFonts.sora(
-                  fontSize: 44,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 3,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Your CV, carrying your aura',
-                style: TextStyle(
-                  fontSize: 13,
-                  letterSpacing: 0.5,
-                  color: Colors.white70,
-                ),
-              ),
-              const SizedBox(height: 60),
-              if (_initError == null)
-                SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.white.withValues(alpha: 0.8),
-                    ),
-                  ),
                 )
               else
                 Padding(

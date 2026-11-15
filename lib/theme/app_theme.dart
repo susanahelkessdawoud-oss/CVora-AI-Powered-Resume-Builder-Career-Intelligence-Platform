@@ -2,39 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Primary Colors
-  static const Color navy = Color(0xFF1E3A5F);
-  static const Color navyLight = Color(0xFF3E6B9E);
-  static const Color navyDark = Color(0xFF0F2138);
+  // --- Brand palette --------------------------------------------------
+  // Dark-first: the app now defaults to this navy/blue/purple system
+  // everywhere, with light mode as a secondary variant of the same
+  // accents rather than the primary experience.
+  static const Color background = Color(0xFF0B1230);
+  static const Color surface = Color(0xFF131C3F);
+  static const Color surface2 = Color(0xFF1A2550);
+  static const Color border = Color(0xFF26336A);
+  static const Color textColor = Color(0xFFF3F5FF);
+  static const Color mutedText = Color(0xFFA6B0D8);
 
-  // "Aura" accent — the warm glow at the heart of the CVora mark (CV +
-  // Aura). Used for highlights, active states, and the logo glow itself;
-  // the navy stays primary so this never turns the app into a generic
-  // gold-and-blue theme.
-  static const Color aura = Color(0xFFF2A93B);
-  static const Color auraLight = Color(0xFFFFD98A);
-  static const Color auraCore = Color(0xFFFFF3D6);
+  static const Color primary = Color(0xFF3366FF);
+  static const Color primaryLight = Color(0xFF7FA2FF);
+  static const Color cyan = Color(0xFF22C3F0);
+  static const Color aiPurple = Color(0xFF9D7BFA);
+  static const Color successColor = Color(0xFF34D399);
+  static const Color warningColor = Color(0xFFFBBF24);
+  static const Color dangerColor = Color(0xFFF87171);
+
+  // AI-generated content cards: tinted dark purple with a purple border,
+  // distinct from ordinary surfaces so AI output is always recognizable.
+  static const Color aiCardBg = Color(0xFF171348);
+  static const Color aiCardBorder = Color(0xFF43358A);
+
+  // --- Back-compat aliases --------------------------------------------
+  // Existing screens reference these names directly (splash/login
+  // gradients, feature-card accents, etc). Re-pointing the values here
+  // means those screens pick up the new brand without per-file edits.
+  static const Color navy = primary;
+  static const Color navyLight = primaryLight;
+  static const Color navyDark = background;
+
+  static const Color aura = aiPurple;
+  static const Color auraLight = Color(0xFFC9B8FF);
+  static const Color auraCore = Color(0xFFEDE8FF);
 
   static const RadialGradient auraGlow = RadialGradient(
     colors: [auraCore, auraLight, aura],
     stops: [0, 0.45, 1],
   );
 
-  // Secondary Colors
-  static const Color blue = Color(0xFF0EA5E9);
-  static const Color green = Color(0xFF10B981);
-  static const Color amber = Color(0xFFFB923C);
+  static const Color blue = cyan;
+  static const Color green = successColor;
+  static const Color amber = warningColor;
+  static const Color red = dangerColor;
+  static const Color success = successColor;
+  static const Color warning = warningColor;
+  static const Color error = dangerColor;
 
-  // Status Colors
-  static const Color red = Color(0xFFEF4444);
-  static const Color success = Color(0xFF22C55E);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color error = Color(0xFFEF4444);
-
-  // Neutral Colors
+  // Neutral colors used by the (secondary) light theme.
   static const Color dark = Color(0xFF1F2937);
   static const Color grey = Color(0xFF6B7280);
-  static const Color light = Color(0xFFF3F4F6);
+  static const Color light = Color(0xFFEEF1FC);
   static const Color white = Color(0xFFFFFFFF);
 
   // Gradients
@@ -44,10 +64,16 @@ class AppTheme {
     colors: [navy, navyLight],
   );
 
-  // Typography: Sora for display/headings (distinctive, geometric — the
-  // brand's "voice"), Inter for body/labels (clean, highly legible at
-  // small sizes). Neither is the Material default (Roboto).
-  static TextStyle get _display => GoogleFonts.sora();
+  static const LinearGradient heroGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [navyDark, navy, navyLight],
+  );
+
+  // --- Typography -------------------------------------------------------
+  // Outfit for display/headings (distinctive, geometric), Inter for
+  // body/labels (clean, highly legible at small sizes).
+  static TextStyle get _display => GoogleFonts.outfit();
   static TextStyle get _body => GoogleFonts.inter();
 
   static TextTheme get textTheme => TextTheme(
@@ -71,18 +97,18 @@ class AppTheme {
   // Text Styles
   static TextStyle get headingLarge => _display.copyWith(
     fontSize: 32,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
     color: dark,
   );
 
   static TextStyle get headingMedium => _display.copyWith(
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: FontWeight.w700,
     color: dark,
   );
 
   static TextStyle get headingSmall => _display.copyWith(
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: FontWeight.w600,
     color: dark,
   );
@@ -111,13 +137,13 @@ class AppTheme {
     color: dark,
   );
 
-  // Border Radius
-  static const double radiusSmall = 8;
-  static const double radiusMedium = 12;
-  static const double radiusLarge = 16;
+  // Border Radius — cards 18, buttons/inputs 14, chips fully rounded.
+  static const double radiusSmall = 10;
+  static const double radiusMedium = 14;
+  static const double radiusLarge = 18;
   static const double radiusXLarge = 24;
 
-  // Spacing
+  // Spacing grid (base 4; screen padding 20; card gap 12-14).
   static const double spacingXSmall = 4;
   static const double spacingSmall = 8;
   static const double spacingMedium = 12;
@@ -125,6 +151,10 @@ class AppTheme {
   static const double spacingXLarge = 20;
   static const double spacing2XLarge = 24;
   static const double spacing3XLarge = 32;
+
+  static const double controlHeight = 52;
+  static const double iconTileSize = 40;
+  static const double chipHeight = 28;
 
   // Shadows
   static const List<BoxShadow> shadowSmall = [
@@ -139,7 +169,16 @@ class AppTheme {
     BoxShadow(color: Color(0x1A000000), blurRadius: 16, offset: Offset(0, 8)),
   ];
 
-  // ThemeData
+  static final OutlineInputBorder _lightInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(radiusMedium),
+    borderSide: const BorderSide(color: light),
+  );
+
+  static final RoundedRectangleBorder _buttonShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(radiusMedium),
+  );
+
+  // ThemeData — light (secondary variant, same accents on light surfaces)
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
@@ -158,17 +197,11 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: light,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: light),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: light),
-      ),
+      border: _lightInputBorder,
+      enabledBorder: _lightInputBorder,
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: navy),
+        borderSide: const BorderSide(color: navy, width: 1.5),
       ),
       labelStyle: const TextStyle(color: grey),
       hintStyle: const TextStyle(color: grey),
@@ -181,13 +214,9 @@ class AppTheme {
       style: FilledButton.styleFrom(
         backgroundColor: navy,
         foregroundColor: white,
-        padding: const EdgeInsets.symmetric(
-          horizontal: spacingLarge,
-          vertical: spacingMedium,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMedium),
-        ),
+        minimumSize: const Size.fromHeight(controlHeight),
+        padding: const EdgeInsets.symmetric(horizontal: spacingLarge),
+        shape: _buttonShape,
         textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
@@ -195,13 +224,9 @@ class AppTheme {
       style: OutlinedButton.styleFrom(
         foregroundColor: navy,
         side: const BorderSide(color: navy),
-        padding: const EdgeInsets.symmetric(
-          horizontal: spacingLarge,
-          vertical: spacingMedium,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMedium),
-        ),
+        minimumSize: const Size.fromHeight(controlHeight),
+        padding: const EdgeInsets.symmetric(horizontal: spacingLarge),
+        shape: _buttonShape,
         textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
@@ -218,7 +243,7 @@ class AppTheme {
     cardTheme: CardThemeData(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radiusMedium),
+        borderRadius: BorderRadius.circular(radiusLarge),
       ),
       color: white,
       surfaceTintColor: navy,
@@ -228,58 +253,49 @@ class AppTheme {
       selectedColor: navy,
       labelStyle: _body.copyWith(color: dark),
       showCheckmark: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radiusSmall),
-      ),
+      shape: const StadiumBorder(),
     ),
   );
 
-  // Dark Theme — a genuinely navy dark mode (not generic slate-gray):
-  // the background and surfaces are tinted dark navy so the brand reads
-  // through even at night, with enough lightness steps between
-  // background/surface/border for real contrast.
-  static const Color _darkBg = Color(0xFF0A1628);
-  static const Color _darkSurface = Color(0xFF13273F);
-  static const Color _darkBorder = Color(0xFF2A4160);
-
+  // ThemeData — dark (the primary, default brand experience)
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: navyLight,
+      seedColor: primary,
       brightness: Brightness.dark,
     ),
-    scaffoldBackgroundColor: _darkBg,
+    scaffoldBackgroundColor: background,
     textTheme: textTheme
-        .apply(bodyColor: white, displayColor: white)
-        .copyWith(bodySmall: _body.copyWith(fontSize: 12, color: const Color(0xFF9DB4D1))),
+        .apply(bodyColor: textColor, displayColor: textColor)
+        .copyWith(bodySmall: _body.copyWith(fontSize: 12, color: mutedText)),
     appBarTheme: AppBarTheme(
-      backgroundColor: _darkSurface,
+      backgroundColor: background,
       elevation: 0,
-      iconTheme: const IconThemeData(color: white),
+      iconTheme: const IconThemeData(color: textColor),
       titleTextStyle: _display.copyWith(
         fontSize: 20,
         fontWeight: FontWeight.w700,
-        color: white,
+        color: textColor,
       ),
       centerTitle: false,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: _darkSurface,
+      fillColor: surface2,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: _darkBorder),
+        borderSide: const BorderSide(color: border),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: _darkBorder),
+        borderSide: const BorderSide(color: border),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMedium),
-        borderSide: const BorderSide(color: navyLight, width: 1.5),
+        borderSide: const BorderSide(color: primaryLight, width: 1.5),
       ),
-      labelStyle: const TextStyle(color: Color(0xFF9DB4D1)),
-      hintStyle: const TextStyle(color: Color(0xFF6B84A3)),
+      labelStyle: const TextStyle(color: mutedText),
+      hintStyle: const TextStyle(color: mutedText),
       contentPadding: const EdgeInsets.symmetric(
         horizontal: spacingMedium,
         vertical: spacingMedium,
@@ -287,35 +303,27 @@ class AppTheme {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: navyLight,
+        backgroundColor: primary,
         foregroundColor: white,
-        padding: const EdgeInsets.symmetric(
-          horizontal: spacingLarge,
-          vertical: spacingMedium,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMedium),
-        ),
+        minimumSize: const Size.fromHeight(controlHeight),
+        padding: const EdgeInsets.symmetric(horizontal: spacingLarge),
+        shape: _buttonShape,
         textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
-        side: const BorderSide(color: navyLight),
-        padding: const EdgeInsets.symmetric(
-          horizontal: spacingLarge,
-          vertical: spacingMedium,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusMedium),
-        ),
+        side: const BorderSide(color: border),
+        minimumSize: const Size.fromHeight(controlHeight),
+        padding: const EdgeInsets.symmetric(horizontal: spacingLarge),
+        shape: _buttonShape,
         textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: const Color(0xFF8FB4E3),
+        foregroundColor: primaryLight,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingMedium,
           vertical: spacingSmall,
@@ -326,21 +334,19 @@ class AppTheme {
     cardTheme: CardThemeData(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radiusMedium),
-        side: const BorderSide(color: _darkBorder),
+        borderRadius: BorderRadius.circular(radiusLarge),
+        side: const BorderSide(color: border),
       ),
-      color: _darkSurface,
-      surfaceTintColor: navyLight,
+      color: surface,
+      surfaceTintColor: primary,
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: _darkBorder,
-      selectedColor: navyLight,
-      labelStyle: _body.copyWith(color: white),
+      backgroundColor: border,
+      selectedColor: primary,
+      labelStyle: _body.copyWith(color: textColor),
       showCheckmark: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radiusSmall),
-      ),
+      shape: const StadiumBorder(),
     ),
-    dividerColor: _darkBorder,
+    dividerColor: border,
   );
 }

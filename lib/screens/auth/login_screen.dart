@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/preferences_service.dart';
-import '../../theme/app_theme.dart';
 import '../../widgets/cvora_mark.dart';
 import '../../widgets/primary_button.dart';
 import 'create_account_screen.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController(), password = TextEditingController();
   bool loading = false;
   bool rememberMe = true;
+  bool obscurePassword = true;
 
   @override
   void initState() {
@@ -85,26 +86,16 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Center(child: CvoraMark(size: 76)),
-            const SizedBox(height: 12),
-            Center(
-              child: Text(
-                'CVORA',
-                style: AppTheme.headingLarge.copyWith(
-                  color: AppTheme.navy,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-            const SizedBox(height: 35),
+            const CvoraMark(size: 64),
+            const SizedBox(height: 24),
             const Text(
-              'Welcome back 👋',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+              'Welcome back',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Login to your CVORA account',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              'Log in to continue building your career profile.',
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.65)),
             ),
             const SizedBox(height: 28),
             TextField(
@@ -118,23 +109,39 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 14),
             TextField(
               controller: password,
-              obscureText: true,
-              decoration: const InputDecoration(
+              obscureText: obscurePassword,
+              decoration: InputDecoration(
                 labelText: 'Password',
-                prefixIcon: Icon(Icons.lock_outline),
+                prefixIcon: const Icon(Icons.lock_outline),
+                suffixIcon: IconButton(
+                  icon: Icon(obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                  onPressed: () => setState(() => obscurePassword = !obscurePassword),
+                ),
               ),
             ),
             const SizedBox(height: 6),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Checkbox(
-                  value: rememberMe,
-                  onChanged: (value) =>
-                      setState(() => rememberMe = value ?? true),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: rememberMe,
+                      onChanged: (value) =>
+                          setState(() => rememberMe = value ?? true),
+                    ),
+                    GestureDetector(
+                      onTap: () => setState(() => rememberMe = !rememberMe),
+                      child: const Text('Remember me'),
+                    ),
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () => setState(() => rememberMe = !rememberMe),
-                  child: const Text('Remember me'),
+                TextButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                  ),
+                  child: const Text('Forgot password?'),
                 ),
               ],
             ),
