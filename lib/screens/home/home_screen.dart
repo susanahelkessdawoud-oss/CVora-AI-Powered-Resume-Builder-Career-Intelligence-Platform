@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/cvora_mark.dart';
 import '../builder/document_type_screen.dart';
 import '../resumes/my_resumes_screen.dart';
 import '../tools/job_matcher_screen.dart';
@@ -103,9 +104,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'CVORA',
-          style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+        title: const Row(
+          children: [
+            CvoraMark(size: 30),
+            SizedBox(width: 10),
+            Text(
+              'CVORA',
+              style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1),
+            ),
+          ],
         ),
         actions: [
           IconButton(

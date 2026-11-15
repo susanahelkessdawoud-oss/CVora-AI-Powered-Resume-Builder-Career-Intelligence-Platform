@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/preferences_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/cvora_mark.dart';
 import '../../widgets/primary_button.dart';
 import 'create_account_screen.dart';
 
@@ -83,7 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
+            const Center(child: CvoraMark(size: 76)),
+            const SizedBox(height: 12),
             Center(
               child: Text(
                 'CVORA',

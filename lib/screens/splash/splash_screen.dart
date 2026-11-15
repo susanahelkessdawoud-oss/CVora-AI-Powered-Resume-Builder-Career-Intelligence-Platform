@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../firebase_options.dart';
 import '../../services/auth_service.dart';
 import '../../services/preferences_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/cvora_mark.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -73,38 +75,35 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 150,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.12),
+                  color: Colors.white.withValues(alpha: 0.95),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.25),
-                      blurRadius: 30,
-                      spreadRadius: 4,
+                      color: AppTheme.aura.withValues(alpha: 0.25),
+                      blurRadius: 36,
+                      spreadRadius: 2,
                     ),
                   ],
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.25),
+                    color: Colors.white.withValues(alpha: 0.4),
                     width: 1.5,
                   ),
                 ),
-                child: const Icon(
-                  Icons.description_outlined,
-                  size: 80,
-                  color: Colors.white,
-                ),
+                padding: const EdgeInsets.all(28),
+                child: const CvoraMark(size: 94, animate: true),
               ),
               const SizedBox(height: 30),
-              const Text(
+              Text(
                 'CVORA',
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900,
+                style: GoogleFonts.sora(
+                  fontSize: 44,
+                  fontWeight: FontWeight.w800,
                   letterSpacing: 3,
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 8),
               const Text(
-                'AI-Powered Resume Builder & Career Intelligence',
+                'Your CV, carrying your aura',
                 style: TextStyle(
                   fontSize: 13,
                   letterSpacing: 0.5,

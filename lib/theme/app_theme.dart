@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Primary Colors
   static const Color navy = Color(0xFF1E3A5F);
   static const Color navyLight = Color(0xFF3E6B9E);
   static const Color navyDark = Color(0xFF0F2138);
+
+  // "Aura" accent — the warm glow at the heart of the CVora mark (CV +
+  // Aura). Used for highlights, active states, and the logo glow itself;
+  // the navy stays primary so this never turns the app into a generic
+  // gold-and-blue theme.
+  static const Color aura = Color(0xFFF2A93B);
+  static const Color auraLight = Color(0xFFFFD98A);
+  static const Color auraCore = Color(0xFFFFF3D6);
+
+  static const RadialGradient auraGlow = RadialGradient(
+    colors: [auraCore, auraLight, aura],
+    stops: [0, 0.45, 1],
+  );
 
   // Secondary Colors
   static const Color blue = Color(0xFF0EA5E9);
@@ -30,44 +44,68 @@ class AppTheme {
     colors: [navy, navyLight],
   );
 
-  // Text Styles
-  static const TextStyle headingLarge = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w900,
-    color: dark,
+  // Typography: Sora for display/headings (distinctive, geometric — the
+  // brand's "voice"), Inter for body/labels (clean, highly legible at
+  // small sizes). Neither is the Material default (Roboto).
+  static TextStyle get _display => GoogleFonts.sora();
+  static TextStyle get _body => GoogleFonts.inter();
+
+  static TextTheme get textTheme => TextTheme(
+    displayLarge: _display,
+    displayMedium: _display,
+    displaySmall: _display,
+    headlineLarge: _display,
+    headlineMedium: _display,
+    headlineSmall: _display,
+    titleLarge: _display,
+    titleMedium: _display,
+    titleSmall: _display,
+    bodyLarge: _body,
+    bodyMedium: _body,
+    bodySmall: _body,
+    labelLarge: _body,
+    labelMedium: _body,
+    labelSmall: _body,
   );
 
-  static const TextStyle headingMedium = TextStyle(
-    fontSize: 24,
+  // Text Styles
+  static TextStyle get headingLarge => _display.copyWith(
+    fontSize: 32,
     fontWeight: FontWeight.w800,
     color: dark,
   );
 
-  static const TextStyle headingSmall = TextStyle(
-    fontSize: 20,
+  static TextStyle get headingMedium => _display.copyWith(
+    fontSize: 24,
     fontWeight: FontWeight.w700,
     color: dark,
   );
 
-  static const TextStyle bodyLarge = TextStyle(
+  static TextStyle get headingSmall => _display.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: dark,
+  );
+
+  static TextStyle get bodyLarge => _body.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: dark,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
+  static TextStyle get bodyMedium => _body.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     color: dark,
   );
 
-  static const TextStyle bodySmall = TextStyle(
+  static TextStyle get bodySmall => _body.copyWith(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: grey,
   );
 
-  static const TextStyle labelLarge = TextStyle(
+  static TextStyle get labelLarge => _body.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: dark,
@@ -109,10 +147,11 @@ class AppTheme {
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: white,
-    appBarTheme: const AppBarTheme(
+    textTheme: textTheme,
+    appBarTheme: AppBarTheme(
       backgroundColor: white,
       elevation: 0,
-      iconTheme: IconThemeData(color: dark),
+      iconTheme: const IconThemeData(color: dark),
       titleTextStyle: headingSmall,
       centerTitle: false,
     ),
@@ -149,7 +188,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusMedium),
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -163,7 +202,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusMedium),
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -173,7 +212,7 @@ class AppTheme {
           horizontal: spacingMedium,
           vertical: spacingSmall,
         ),
-        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
       ),
     ),
     cardTheme: CardThemeData(
@@ -187,7 +226,7 @@ class AppTheme {
     chipTheme: ChipThemeData(
       backgroundColor: light,
       selectedColor: navy,
-      labelStyle: const TextStyle(color: dark),
+      labelStyle: _body.copyWith(color: dark),
       showCheckmark: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radiusSmall),
@@ -210,11 +249,14 @@ class AppTheme {
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: _darkBg,
-    appBarTheme: const AppBarTheme(
+    textTheme: textTheme
+        .apply(bodyColor: white, displayColor: white)
+        .copyWith(bodySmall: _body.copyWith(fontSize: 12, color: const Color(0xFF9DB4D1))),
+    appBarTheme: AppBarTheme(
       backgroundColor: _darkSurface,
       elevation: 0,
-      iconTheme: IconThemeData(color: white),
-      titleTextStyle: TextStyle(
+      iconTheme: const IconThemeData(color: white),
+      titleTextStyle: _display.copyWith(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: white,
@@ -254,7 +296,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusMedium),
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -268,7 +310,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusMedium),
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -278,7 +320,7 @@ class AppTheme {
           horizontal: spacingMedium,
           vertical: spacingSmall,
         ),
-        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        textStyle: _body.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
       ),
     ),
     cardTheme: CardThemeData(
@@ -293,20 +335,11 @@ class AppTheme {
     chipTheme: ChipThemeData(
       backgroundColor: _darkBorder,
       selectedColor: navyLight,
-      labelStyle: const TextStyle(color: white),
+      labelStyle: _body.copyWith(color: white),
       showCheckmark: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radiusSmall),
       ),
-    ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: white),
-      bodyMedium: TextStyle(color: white),
-      bodySmall: TextStyle(color: Color(0xFF9DB4D1)),
-      titleLarge: TextStyle(color: white),
-      titleMedium: TextStyle(color: white),
-      titleSmall: TextStyle(color: white),
-      labelLarge: TextStyle(color: white),
     ),
     dividerColor: _darkBorder,
   );
