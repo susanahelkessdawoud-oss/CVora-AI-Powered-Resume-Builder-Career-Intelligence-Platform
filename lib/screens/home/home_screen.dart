@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/resume.dart';
+import '../activity/activity_screen.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
@@ -118,9 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           CvAppBarAction(
                             icon: Icons.notifications_outlined,
-                            onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("You're all caught up. Manage alerts in Profile > Settings.")),
-                            ),
+                            onTap: () => openPage(context, const ActivityScreen()),
                           ),
                         ],
                       ),

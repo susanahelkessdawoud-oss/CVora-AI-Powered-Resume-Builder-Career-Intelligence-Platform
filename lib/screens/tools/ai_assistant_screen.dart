@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/ai_service.dart';
@@ -31,6 +32,37 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   void initState() {
     super.initState();
     _loadContext();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    final uid = AuthService.instance.currentUser?.id;
+    if (uid == null) return;
+    try {
+      final doc = await FirebaseFirestore.instance.collection('aiChats').doc(uid).get();
+      final raw = doc.data()?['messages'] as List? ?? [];
+      if (!mounted || raw.isEmpty) return;
+      setState(() {
+        _messages.addAll(raw.map((m) => _ChatMessage(m['text'] as String, m['fromUser'] as bool)));
+      });
+      _scrollToEnd();
+    } catch (_) {
+      // History is a convenience; the chat still works without it.
+    }
+  }
+
+  Future<void> _persistHistory() async {
+    final uid = AuthService.instance.currentUser?.id;
+    if (uid == null) return;
+    final recent = _messages.length > 50 ? _messages.sublist(_messages.length - 50) : _messages;
+    try {
+      await FirebaseFirestore.instance.collection('aiChats').doc(uid).set({
+        'messages': recent.map((m) => {'text': m.text, 'fromUser': m.fromUser}).toList(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (_) {
+      // Non-fatal: the conversation stays visible in this session either way.
+    }
   }
 
   Future<void> _loadContext() async {
@@ -77,6 +109,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
             .toList(),
       );
       if (mounted) setState(() => _messages.add(_ChatMessage(reply, false)));
+      await _persistHistory();
     } catch (e) {
       if (mounted) setState(() => _messages.add(_ChatMessage('Sorry, I could not reach the AI service: $e', false)));
     } finally {

@@ -71,12 +71,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return missing;
   }
 
-  Future<void> _editTextField(String title, String key, String? current) async {
-    final controller = TextEditingController(text: current ?? '');
+  Future<void> _editDisplayName(String current) async {
+    final controller = TextEditingController(text: current);
     final value = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
+        title: const Text('Display name'),
         content: TextField(controller: controller, autofocus: true),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
@@ -84,7 +84,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
-    if (value != null) await _saveField(key, value);
+    if (value == null || value.isEmpty) return;
+    try {
+      await AuthService.instance.updateProfile(displayName: value);
+      if (mounted) setState(() {});
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not update name: $e')));
+      }
+    }
+  }
+
+  Future<void> _addIndustry() async {
+    final controller = TextEditingController();
+    final value = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add an industry'),
+        content: TextField(controller: controller, autofocus: true, decoration: const InputDecoration(hintText: 'e.g. Fintech')),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(context, controller.text.trim()), child: const Text('Add')),
+        ],
+      ),
+    );
+    if (value == null || value.isEmpty) return;
+    final current = List<String>.from(_profile?['preferredIndustries'] as List? ?? []);
+    if (!current.contains(value)) current.add(value);
+    await _saveField('preferredIndustries', current);
+  }
+
+  Future<void> _editLanguages(List<String> current) async {
+    final controller = TextEditingController(text: current.join(', '));
+    final value = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Languages'),
+        content: TextField(controller: controller, autofocus: true, decoration: const InputDecoration(hintText: 'Arabic, English')),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(context, controller.text.trim()), child: const Text('Save')),
+        ],
+      ),
+    );
+    if (value == null) return;
+    final list = value.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+    await _saveField('languages', list);
   }
 
   @override
@@ -109,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Expanded(
                         child: Text('Profile', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
                       ),
-                      CvAppBarAction(icon: Icons.edit_outlined, onTap: () => _editTextField('Display name', 'displayNameHint', displayName)),
+                      CvAppBarAction(icon: Icons.edit_outlined, onTap: () => _editDisplayName(displayName)),
                     ],
                   ),
                   const SizedBox(height: 18),
@@ -180,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ActionChip(
                               avatar: const Icon(Icons.add, size: 16),
                               label: const Text('Add'),
-                              onPressed: () => _editTextField('Add an industry', 'preferredIndustriesAdd', ''),
+                              onPressed: _addIndustry,
                             ),
                           ],
                         ),
@@ -192,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 10),
                   _row(context, Icons.link, 'Links', _linksSubtitle(), () => _editLinks()),
                   const SizedBox(height: 10),
-                  _row(context, Icons.language, 'Languages', 'Arabic · English', () => _editTextField('Languages', 'languages', 'Arabic, English')),
+                  _row(context, Icons.language, 'Languages', _languagesSubtitle(), () => _editLanguages(_languagesList())),
                   const SizedBox(height: 10),
                   _row(context, Icons.settings_outlined, 'Settings', 'Account, AI, privacy', () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
                 ],
@@ -200,6 +245,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: const CvBottomNav(currentIndex: 4),
     );
+  }
+
+  List<String> _languagesList() => List<String>.from(_profile?['languages'] as List? ?? []);
+
+  String _languagesSubtitle() {
+    final list = _languagesList();
+    return list.isEmpty ? 'Add the languages you speak' : list.join(' · ');
   }
 
   String _linksSubtitle() {
