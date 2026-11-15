@@ -120,7 +120,7 @@ class AtsChecker {
             e.startDate.trim().isEmpty || _dateLike.hasMatch(e.startDate.trim()));
     checks.add(AtsCheck(
       label: 'Consistent date formatting',
-      points: 10,
+      points: 5,
       passed: datesConsistent,
       detail: datesConsistent
           ? 'Experience dates look consistent and parseable.'
@@ -135,11 +135,31 @@ class AtsChecker {
     final cleanChars = !_unsafeChars.hasMatch(bodyText);
     checks.add(AtsCheck(
       label: 'No ATS-unsafe characters',
-      points: 10,
+      points: 5,
       passed: cleanChars,
       detail: cleanChars
           ? 'No curly quotes, bullets, dashes or symbols that some parsers mangle.'
           : 'Found characters (curly quotes, bullets, em-dashes, emoji) that some ATS text extractors drop or mangle.',
+    ));
+
+    // A real number ("40%", "3rd place", "15 skills") is what lets a
+    // recruiter or ATS keyword scan distinguish genuine impact from a
+    // list of duties. Years on their own don't count — they're dates,
+    // not results.
+    final quantifiableText = [
+      ...r.experience.map((e) => e.description),
+      ...r.projects.map((p) => p.description),
+      ...r.achievements.map((a) => '${a.title} ${a.description}'),
+    ].join(' ');
+    final hasMetric = RegExp(r'\d+%|\$\d+|\b\d{1,4}(st|nd|rd|th)\b|\b\d{1,4}\+')
+        .hasMatch(quantifiableText);
+    checks.add(AtsCheck(
+      label: 'Quantified results',
+      points: 10,
+      passed: hasMetric,
+      detail: hasMetric
+          ? 'At least one measurable result (a percentage, count, or ranking) was found.'
+          : 'No measurable results found (e.g. "cut X by 20%", "led a team of 5", "3rd place"). Recruiters and ATS keyword scans both weigh numbers heavily — duties without results read as less credible.',
     ));
 
     final wordCount = [

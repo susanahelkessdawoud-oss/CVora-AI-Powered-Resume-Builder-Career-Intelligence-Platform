@@ -95,12 +95,22 @@ class ResumeScorer {
       );
     }
 
-    // Experience (25 pts)
+    // Experience (25 pts) — detail alone caps out below full marks; full
+    // marks require at least one quantified result (a number, a percent,
+    // a ranking), since that's what actually separates a strong bullet
+    // from a duties list of the same length.
     if (r.experience.isNotEmpty) {
       final hasDetailedDescription = r.experience.any(
         (e) => e.description.trim().length >= 40,
       );
-      points += hasDetailedDescription ? 25 : 15;
+      final hasMetric = RegExp(r'\d+%|\$\d+|\b\d{1,4}(st|nd|rd|th)\b|\b\d{1,4}\+')
+          .hasMatch(r.experience.map((e) => e.description).join(' '));
+      final experiencePoints = !hasDetailedDescription
+          ? 10
+          : hasMetric
+              ? 25
+              : 18;
+      points += experiencePoints;
       if (!hasDetailedDescription) {
         suggestions.add(
           ScoreSuggestion(
@@ -109,11 +119,19 @@ class ResumeScorer {
             isPositive: false,
           ),
         );
+      } else if (!hasMetric) {
+        suggestions.add(
+          ScoreSuggestion(
+            title: 'Quantify your experience',
+            detail: 'Your descriptions are detailed, but none include a measurable result — a percentage, a count, a ranking. Numbers are what make impact credible.',
+            isPositive: false,
+          ),
+        );
       } else {
         suggestions.add(
           ScoreSuggestion(
             title: 'Experience is well described',
-            detail: 'Your work history includes meaningful detail.',
+            detail: 'Your work history includes meaningful, quantified detail.',
             isPositive: true,
           ),
         );
