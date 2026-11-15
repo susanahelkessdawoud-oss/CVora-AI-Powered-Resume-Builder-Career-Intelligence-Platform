@@ -5,6 +5,8 @@ import '../../services/ai_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/ats_checker.dart';
+import '../../utils/resume_scorer.dart';
 import '../../widgets/cv_components.dart';
 
 class _ChatMessage {
@@ -27,6 +29,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   bool _sending = false;
   String? _resumeTitle;
   String? _resumeSummary;
+  String? _analysisNote;
 
   @override
   void initState() {
@@ -72,11 +75,18 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
       final resumes = await DatabaseService.instance.getResumes(uid);
       if (resumes.isNotEmpty && mounted) {
         resumes.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+        final active = resumes.first;
+        final ats = AtsChecker.check(active);
+        final completeness = ResumeScorer.score(active);
+        final failed = ats.checks.where((c) => !c.passed).map((c) => c.label).toList();
         setState(() {
-          _resumeTitle = resumes.first.professionalTitle.isNotEmpty
-              ? resumes.first.professionalTitle
-              : (resumes.first.documentType == 'cv' ? 'Your CV' : 'Your Resume');
-          _resumeSummary = resumes.first.professionalSummary;
+          _resumeTitle = active.professionalTitle.isNotEmpty
+              ? active.professionalTitle
+              : (active.documentType == 'cv' ? 'Your CV' : 'Your Resume');
+          _resumeSummary = active.professionalSummary;
+          _analysisNote = 'ATS readiness score: ${ats.score}/100. '
+              'Completeness score: ${completeness.score}/100. '
+              '${failed.isEmpty ? 'All ATS checks pass.' : 'Failed ATS checks: ${failed.join(', ')}.'}';
         });
       }
     } catch (_) {
@@ -97,6 +107,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
       final reply = await AiService.instance.chatAboutCv(
         question: text,
         resumeSummary: _resumeSummary,
+        lastAnalysisNote: _analysisNote,
         selectedJobTitle: _resumeTitle,
         history: _messages
             .take(_messages.length - 1)
