@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_theme.dart';
+import '../../widgets/cv_components.dart';
 import 'resume_builder_screen.dart';
 
 /// First step of the creation flow.
@@ -118,6 +119,7 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: const CvBottomNav(currentIndex: 2),
     );
   }
 
@@ -131,9 +133,13 @@ class _DocumentTypeScreenState extends State<DocumentTypeScreen> {
         children: [
           Row(
             children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
+              Builder(
+                builder: (context) => Navigator.canPop(context)
+                    ? IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      )
+                    : const SizedBox(width: 8),
               ),
               const SizedBox(width: 4),
               const Text(

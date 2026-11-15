@@ -4,6 +4,7 @@ import '../../models/resume.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/cv_components.dart';
 import '../builder/document_type_screen.dart';
 import '../builder/resume_builder_screen.dart';
 import '../preview/resume_preview_screen.dart';
@@ -283,6 +284,7 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
           );
         },
       ),
+      bottomNavigationBar: const CvBottomNav(currentIndex: 1),
     );
   }
 }
